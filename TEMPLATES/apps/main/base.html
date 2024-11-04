@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en_us">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{% block title %} Themba Tswai {% endblock %}</title>
+
+
+
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <!--stylesheet-->
+    <link rel="stylesheet" href="{% static 'bootstrap-5.0.2/css/bootstrap.min.css' %}">
+
+    <script src="{% static 'bootstrap-5.0.2/js/bootstrap.bundle.min.js' %}"></script>
+
+
+  </head>
+
+
+  <body>
+
+
+    <nav class="navbar sticky-top navbar-expand-md bg-light justify-center">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+              <img
+              class="d-inline-flex"
+              src="{% static 'assets/icons/T-white.png' %}"
+              alt="logo"
+              width="100"
+              height="100">
+          </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavContent" aria-controls="navbarNavContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavContent">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item active">
+              <a class="nav-link text-muted" href="{% url 'index' %}">Home</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-muted" href="{% url 'portfolio' %}">Portfolio</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-muted" href="{% url 'blog' %}">Blog</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-muted" href="{% url 'shop' %}">Store</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-muted" href="{% url 'home' %}">Contact</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-muted" href="{% url 'home' %}">Members</a>
+            </li>
+
+            <span class="d-flex">
+              <li class="nav-item mr-5">
+                <a class="nav-link text-muted" href="{% url 'login' %}">
+                <i class="fa fa-user-icon"></i> Login </a>
+              </li>
+
+            </span>
+            <span>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">
+                <i class="fa fa-shopping-cart">
+                </i></a>
+              </li>
+            </span>
+          </ul>
+      </div>
+</div>
+    </nav>
+
+
+
+<!--MAIN_CONTENT -->
+<div id="content-wrapper" class="container-fluid">
+  {% block content %}
+  {% endblock %}
+</div>
+<!-- END -->
+
+
+<!-- SIDEBAR_CONTENT -->
+<aside id="aside-wrapper" class="container">
+    {% block sidebar_content %}
+    {% endblock %}
+</aside>
+<!-- END -->
+
+
+<!--FOOTER_CONTAINER-->
+<div id="footer-wrapper">
+  <footer class="footer-container">
+    <div id="footer-content">
+    <img src="{% static 'assets/icons/T-white.png' %}"
+    alt="logo" width="auto" height="35">
+    </div>
+
+    <span id="copyright-text">
+      <p id="all_rights-text" >
+      All-Rights Reserved ™️
+      </p>
+    </span>
+
+    <span id="copyright-text">
+    ©️ {{ current_year }}
+    </span>
+
+  </footer>
+</div>
+<!--END-->
+
+
+
+
+<!--JS_CLIENT_SCRIPT-->
+<script src="{% static 'bootstrap-5.0.2/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'bootstrap-5.0.2/js/bootstrap.min.js' %}"></script>
+<!--END_JS_CLIENT-->
+
+
+<!--JS_SCRIPTS-->
+
+<!--END_JS_SCRIPTS-->
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block title %}
+My-Portfolio
+{% endblock %}
+
+{% block content %}
+<div id="portfolio-wrapper">
+    <h1 id="portfolio-text-header"></h1>
+
+    {% if proj_count == 0 %}
+      <div class="container" id="project-count-container">
+        <span class="container-flex">
+          <h1>{{ proj_count }}</h1>
+          <h4>projects uploaded .....</h4>
+        </span>
+      </div>
+    {% endif %}
+
+
+    {% comment %} PORTFOLIO-CONTAINER-GRID {% endcomment %}
+    {% if proj_count > 0 %}
+      <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-4">
+
+        {% comment %} PORTFOLIO_CONTENT {% endcomment %}
+        {% for project in projects %}
+        <div id="porfolio-container-grid" class="container-flex">
+          <a href="{% url 'project_detail' project.pk %}" class="item-link" >
+            <div id="card-content" class="card-body">
+              <img id="proj_img" width="100%" src="{{ project.project_logo }}" class="img-fluid h-100 w-100"
+              alt="{{ item.project_title }}" >
+
+              <div id="portfolio-footer" class="card-footer">
+              <a id="portfolio-btn" href="{% url 'project_detail' project.pk %}"
+              class="btn btn-md btn-button-block"> → </a>
+              </div>
+
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+        {% comment %} END_CONTENT {% endcomment %}
+
+      </div>
+    {% endif %}
+  {% comment %} END_CONTAINER_GRID {% endcomment %}
+
+
+</div>
+{% endblock %}

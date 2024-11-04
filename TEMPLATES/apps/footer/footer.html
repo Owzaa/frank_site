@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% load django_bootstrap5 % }
+{% bootstrap_css %}
+
+
+{% block footer__content %}
+
+
+<div class=" flex footerContainer"style="margin-top:auto;">
+  <div class="container text-center">
+    <img src="{% static 'images/logo.png' %}" alt="logo" width="75" height="auto" />
+      <div class="row">
+            <div class="flex-container">
+            <p class="text-muted text-sm text-center">All Rights Reserved. ™️ </p>
+         
+           <p class="text-center text-muted"> <small> &copy; {{year}} </small> </p>   </div>
+      </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+
+  <section class="container-flex">
+            <div class="row">
+
+              <div class="flex py-5 px-auto mx-auto  col-6 col-md-6 col-sm-6">
+                <img width="100%" height="400" class="img-fluid mt-0 rounded border border-0 border-dark-subtle" src="{% static 'assets/icons/ThembaIcon.png'%}" alt="avatar-pic-themba"></img>
+              </div>
+
+              <div class="col-6 col-md-6 col-xl-6">
+                <h2 class="display-6 text-center text-md-start text-shadow-head fw-bold mb-auto">
+
+                </h2>
+                <p class="lead-4 text-center text-lg-start text-shadow-body mb-auto d-flex justify-content-sm-center justify-content-md-start">
+
+
+                </p>
+              </div>
+            </div>
+
+
+  </section>
+
+
+  <section id="blog" style="margin-top: 1rem; padding-bottom:.5rem">
+  <div class="container-fluid">
+    <h3 class="text-lg text-muted rounded">SEASON_SCOOPS</h3>
+
+    <div id="season_scoop_content">
+        <div  class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col">
+
+          </div>
+        </div>
+    </div>
+  </div>
+  </section>
+
+
+  <section class="interests" style="margin-top: 1rem">
+  <div id="interests-container" class="container-flex">
+
+  <div class="container  sliderTextHeader smooth-shadow-sm py-3 px-5 mb-5">
+    <h3 class="text-lg text-muted rounded">Interests</h3>
+  </div>
+
+  <div class="content align-content-center">
+
+  </div>
+
+  </div>
+  </section>
+
+
+  <section class="products" style="margin-top: 1rem">
+  <div id="product-container" class="flex">
+
+      <div class=" sliderTextHeader smooth-shadow-sm py-3 px-5 mb-5">
+      <h3 class="text-lg text-muted rounded">All Products</h3>
+      </div>
+      {{ product_slider }}
+
+
+        {% for item in  product %}
+
+        <div id="client-container-slider">
+
+
+              <div class="slider-content">
+
+                <img
+                src="{{ item.product_logo }}"
+                class="card-img-top "
+                alt="{{ item.product_name }}"
+                width="100%"
+                height="150"
+                >
+
+                <div class="card-body">
+                </div>
+                <div class="card-footer">
+                  <a id="view-project" href="{{ item.client_url }}" class="btn btn-primary">
+
+                  </a>
+                </div>
+
+              </div>
+
+        </div>
+
+        {% endfor %}
+
+
+
+  </div>
+  </section>
+
+
+  <section id="clients">
+
+  <h2  class="clientHeaderText">Happy Clients</h2>
+  <h4> "building relationships that last forever" </h4>
+
+  {% for item in  client %}
+    <div id="client-container-slider">
+
+
+        <div class="slider-content">
+
+          <img
+          src="{{ item.client_logo }}"
+          class="card-img-top "
+          alt="{{ item.client_name }}"
+          width="auto"
+          height="auto"
+          >
+
+
+          <div class="card-footer">
+            <a id="view-project" href="{{ item.client_url }}" class="btn btn-primary">
+
+            </a>
+          </div>
+
+        </div>
+
+    </div>
+  {% endfor %}
+
+  </section>
+
+
+</div>
+
+{% endblock %}

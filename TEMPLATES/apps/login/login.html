@@ -1,0 +1,37 @@
+{% extends 'main/index.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div id="login-container">
+
+
+<form>
+
+<center>
+<label for="name">name </label>
+
+<input type="text" name="name" value="">
+<br/>
+<br/>
+
+<label for="email">email </label>
+<input type="email" name="email" value="">
+<br/>
+<br/>
+<label for="password">password</label>
+<input type="password" name="password"  value="">
+<br/>
+<br/>
+
+<button id="view-project" type="button" name="submit">sign-in</button>
+</center>
+</form>
+
+</div>
+
+
+
+
+{% endblock %}

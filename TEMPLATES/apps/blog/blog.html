@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block title %} Blog {% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="blog">
+      <h1 id="blog-text-header" class="text-lg text-center pt-5">Blog</h1>
+      <div class="blog-posts">
+        {% for post in posts %}
+          <article>
+            <h2 id="blog-text-title">{{ post.title }}</h2>
+            <p id="post-context-text">{{ post.content }}</p>
+          </article>
+        {% empty %}
+          <p>No blog posts available.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

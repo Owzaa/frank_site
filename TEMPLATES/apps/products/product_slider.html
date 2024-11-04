@@ -1,0 +1,67 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="content align-content-center">
+
+
+    <!-- CArousel Wrapper-->
+    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+
+      <!--Carousel Indicators-->
+      <div class="carousel-indicators">
+      {% for item in product %}
+
+        <button type="button" data-slide-target="#productCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+        {% if forloop.first %}
+        class="active"
+        {% endif %}
+        aria-current="true">
+        </button>
+      {% endfor %}
+      </div>
+
+      <!-- Carousel Items-->
+      <div class="carousel-inner">
+      {% for item in product %}
+        <div class="carousel-item {% if forloop.first  %} active {% endif %}">
+        <div class="card" style="width: 18rem;">
+          <img src="{{ item.product_image }}"
+          class="d-block w-100 card-img-top"
+          alt="{{ item.name }}"/>
+          <div class="card-body">
+          <h5 class="card-title">{{ item.name }}</h5>
+          <p class="card-text">{{ item.description }}</p>
+          <p class="fw-bold">R{{ item.price }}</p>
+
+
+          <a href="{{ item.url }}"
+          class="btn btn-primary">
+          view Product
+          </a>
+          </div>
+        </div>
+        </div>
+      {% endfor %}
+
+      </div>
+
+      <!--Carousel Controls Previous-->
+      <button class="carousel-control-prev"
+      type="button"
+      data-bs-target="#productCarousel"
+      data-bs-slide="prev">
+      <span class="visually-hidden">previous</span>
+      </button>
+      <!--Carousel Controls Next-->
+      <button class="carousel-control-next"
+      type="button"
+      data-bs-target="#productCarousel"
+      data-bs-slide="next">
+      <span class="visually-hidden" aria-hidden="true">next</span>
+      </button>
+    </div>
+</div>
+
+{% endblock %}

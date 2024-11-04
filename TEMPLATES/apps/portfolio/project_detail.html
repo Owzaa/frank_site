@@ -1,0 +1,67 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block content %}
+  <div class="card p-5 m-5">
+    <p class="text-muted text-uppercase text-center mb-0">{{ project.project_title }}</p>
+
+    <!-- PROJECT_SLIDER_IMAGES -->
+    <div class="container-fluid slider-container">
+    <div id="carouselExampleIndicators" class="carousel slide " data-bs-ride="carousel">
+
+          <div class="carousel-indicators">
+        {% for image in project.images.all %}
+          <a type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}"
+          class="btn btn-lg {% if forloop.first %}active{% endif %}" aria-current="true"
+          aria-label="Slide {{ forloop.counter }}">
+          <img id="slides_img" src="{{ image.image.url }}" class="card-img w-100 " alt="{{ image.caption }}">
+
+          </a>
+
+        {% endfor %}
+              </div>
+
+      <div class="carousel-inner">
+        {% for image in project.images.all %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img id="slides_img" src="{{ image.image.url }}" class="d-block h-100" alt="{{ image.caption }}">
+            <div class="carousel-caption">
+              <h5>{{ image.caption }}</h5>
+            </div>
+            </div>
+
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev " type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon visually-hidden" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon visually-hidden" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+</div>
+    <!-- END_PROJECT_SLIDER_IMAGES -->
+
+    <p id="project-text-technology" class="text-muted">{{ project.description|truncatewords:12 }}</p>
+
+    <p id="project-text-technology" class="text-bolder">
+      web:<a class="btn btn-default" id="link-btn" href="{{ project.project_url }}">{{ project.project_url }}</a>
+    </p>
+
+    <p id="project-text-technology" class="text-bolder">started: {{ project.project_start }}</p>
+
+    <p id="project-text-technology" class="text-bolder">finished: {{ project.project_finished }}</p>
+
+    <p id="project-text-technology" class="text">Tools: {{ project.technology }}</p>
+
+    <div class="text-center">
+      <a id="back_btn" href="{% url 'portfolio' %}" class="btn btn-lg btn-block text-muted border-1 bg-black-500">
+      ←
+      <span class="text-smaller text-muted text-uppecase">Portfolio</span>
+      </a>
+    </div>
+  </div>
+{% endblock %}

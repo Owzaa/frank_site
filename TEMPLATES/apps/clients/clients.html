@@ -1,0 +1,24 @@
+{% extends 'layout/client_layout.html'%}
+
+{% load static %}
+
+{% block title %} clients-section {% endblock %}
+
+
+
+{% block content %}
+  <div class="flex-container row justify-center">
+    <div class="cols-12 col-xs-12" id="clientContainer">
+      <ul class="client-list">
+        {% for client in clients %}
+          <li class="client-item logo-slider">
+            <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="client-logo">
+          </li>
+        {% empty %}
+          <li class="client-item">
+            <h1 class="textHeader text-center bg-500">No clients available </h1> </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}
