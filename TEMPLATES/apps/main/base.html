@@ -27,7 +27,7 @@
 
 
     <nav class="navbar sticky-top navbar-expand-md bg-light justify-center">
-      <div class="container-fluid">
+      <div class="container">
           <a class="navbar-brand" href="#">
               <img
               class="d-inline-flex"
@@ -44,7 +44,7 @@
           </button>
 
         <div class="collapse navbar-collapse" id="navbarNavContent">
-          <ul class="navbar-nav me-auto">
+          <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
               <a class="nav-link text-muted" href="{% url 'index' %}">Home</a>
             </li>
@@ -91,7 +91,7 @@
 
 
 <!--MAIN_CONTENT -->
-<div id="content-wrapper" class="container-fluid">
+<div class="container-fluid justify-content-center">
   {% block content %}
   {% endblock %}
 </div>

@@ -13,10 +13,7 @@ urlpatterns = [
     path('', include('HOME.urls')),
     path('', include('APPS.STORE.urls')),
     path('', include('APPS.PORTFOLIO.urls')),
-
-
     path('product/', include('APPS.STORE.urls')),
-
     path('blog', include('APPS.BLOG.urls')),
     path('payment/', include('APPS.PAYMENTS.urls')),
 

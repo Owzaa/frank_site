@@ -1,53 +1,104 @@
 {% extends 'main/base.html' %}
-{% load static %}
 
+{% load static %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 
-<div class="container-fluid">
-
-  <section class="container-flex">
-            <div class="row">
-
-              <div class="flex py-5 px-auto mx-auto  col-6 col-md-6 col-sm-6">
-                <img width="100%" height="400" class="img-fluid mt-0 rounded border border-0 border-dark-subtle" src="{% static 'assets/icons/ThembaIcon.png'%}" alt="avatar-pic-themba"></img>
-              </div>
-
-              <div class="col-6 col-md-6 col-xl-6">
-                <h2 class="display-6 text-center text-md-start text-shadow-head fw-bold mb-auto">
-
-                </h2>
-                <p class="lead-4 text-center text-lg-start text-shadow-body mb-auto d-flex justify-content-sm-center justify-content-md-start">
-
-
-                </p>
-              </div>
-            </div>
-
-
-  </section>
-
-
-  <section id="blog" style="margin-top: 1rem; padding-bottom:.5rem">
-  <div class="container-fluid">
-    <h3 class="text-lg text-muted rounded">SEASON_SCOOPS</h3>
-
-    <div id="season_scoop_content">
-        <div  class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
-
-          </div>
+<div class="main-container">
+  <section class="container-fluid" style="background-image: url({% static 'assets/hero-image.jpg' %}); background-size:cover;height:500px;margin-bottom:0px;">
+    <div class="row">
+        <div class="col-12 col-md-6 d-flex p-2">
+            <img
+                src="{% static 'assets/icons/ThembaIcon.png' %}"
+                alt="avatar-pic-themba"
+                class="img-flex d-flex"
+                width="65%"
+                height="95%"
+            >
         </div>
+
+        <div class="col-12 col-md-6 d-flex flex-column justify-content-center">
+            <h2 class="display-6 text-center text-md-start text-shadow-head fw-bold mb-3">
+                <!-- Add your heading text here -->
+            </h2>
+            <p class="lead-4 text-center text-lg-start text-shadow-body mb-0">
+                <!-- Add your paragraph text here -->
+            </p>
+        </div>
+
     </div>
-  </div>
   </section>
 
 
-  <section class="interests" style="margin-top: 1rem">
+
+<!--SEASON_SCOOP_SECTION-->
+<div class="blog-ontainer mt-0">
+<div  class="row" style="display:flex;padding-bottom:.5rem;justify-content:center;">
+      <h1 class="text-center">Season Scoop</h1>
+
+  <div id="container-season_scoop" class="col-md-8 justify-center">
+      <!--CARD-->
+      {% for post in Post %}
+      <div id="" class="card mb-3 w-75">
+          <!--Header_Title-->
+          <div class="card-body">
+              <div class="row card-title mt-0">
+                <span id="author_title" class="d-inline-flex p-2">
+                  <img
+                  src="{% static 'assets/icons/ThembaIcon2.png' %}"
+                  alt="user-icon"
+                  class="d-inline-flex "
+                  style="width:17%; height:63;border-radius:100%;"
+                  >
+                  <small id="blog_author" class="d-flex p-2">
+                      <p class="text-sm mb-1">
+                      {{ post.author }}  Themba Tswai
+                      <br/>
+                      {{ post.published_at }}  19 June 2023
+                      </p>
+                  </small>
+
+                </span>
+              </div>
+
+              <h4 class="card-title">
+                {{ post.title }}  Unlearning to Relearn Creativity: Unlocking Your Inner Innovator
+              </h4>
+          </div>
+          <!--End-Title-->
+
+          <!--bodyContainer-->
+          <div class="card-body">
+
+                    <span id="author_title" class="d-inline-flex p-3">
+                      <small class="flex">
+                        <p> 62 views
+                            4 comments
+                        </p>
+
+
+                      </small>
+
+                    </span>
+
+            </div>
+          <!--End-bodyContainer-->
+      </div>
+      {% endfor %}
+      <!--END_CARD-->
+  </div>
+</div>
+</div>
+<!--END_SEASON_SCOOP_SECTION-->
+
+
+<!--INTERESTS_SECTION-->
+<section class="interests" style="margin-top: 1rem">
   <div id="interests-container" class="container-flex">
 
   <div class="container  sliderTextHeader smooth-shadow-sm py-3 px-5 mb-5">
-    <h3 class="text-lg text-muted rounded">Interests</h3>
+    <h3 class="text-center text-muted rounded">Interests</h3>
   </div>
 
   <div class="content align-content-center">
@@ -55,14 +106,16 @@
   </div>
 
   </div>
-  </section>
+</section>
+<!--END_INTERESTS_SECTION-->
 
 
-  <section class="products" style="margin-top: 1rem">
+<!--PRODUCT_SECTION-->
+<section class="products" style="margin-top: 1rem">
   <div id="product-container" class="flex">
 
       <div class=" sliderTextHeader smooth-shadow-sm py-3 px-5 mb-5">
-      <h3 class="text-lg text-muted rounded">All Products</h3>
+      <h3 class="text-lg text-center text-muted rounded">All Products</h3>
       </div>
       {{ product_slider }}
 
@@ -76,10 +129,10 @@
 
                 <img
                 src="{{ item.product_logo }}"
-                class="card-img-top "
+                class="card-img-top ""
                 alt="{{ item.product_name }}"
                 width="100%"
-                height="150"
+                height="auto"
                 >
 
                 <div class="card-body">
@@ -99,26 +152,26 @@
 
 
   </div>
-  </section>
+</section>
 
 
-  <section id="clients">
+<!--CLIENT_SECTION-->
+<di id="clients">
 
-  <h2  class="clientHeaderText">Happy Clients</h2>
-  <h4> "building relationships that last forever" </h4>
+  <h2  class="clientHeaderText text-center">Happy Clients</h2>
+  <h6 class="text-center text-muted"> "building relationships that last forever" </h6>
 
   {% for item in  client %}
-    <div id="client-container-slider">
+    <div id="client-container">
 
-
-        <div class="slider-content">
+        <div  class="row">
 
           <img
           src="{{ item.client_logo }}"
-          class="card-img-top "
+          class="img-fluid "
           alt="{{ item.client_name }}"
-          width="auto"
-          height="auto"
+          width="35%"
+          height="75"
           >
 
 
@@ -133,9 +186,7 @@
     </div>
   {% endfor %}
 
-  </section>
-
-
+</di>
+<!--END_CLIENT_SECTION-->
 </div>
-
 {% endblock %}

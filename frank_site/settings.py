@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -24,10 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent
 SECRET_KEY = 'django-insecure-zayj=w%8apcy@y4c)k6kj=z#5g574=wt#pq!))l5lhzse(0+$&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = False
 
 
 # APPLICATION_DIR
@@ -70,7 +69,6 @@ ROOT_URLCONF = 'frank_site.urls'
 TEMPLATES_DIR = './TEMPLATES/'
 
 
-
 APP_TEMPLATE_DIR = os.path.join(TEMPLATES_DIR, 'apps')
 STORE_TEMPLATE_DIR = os.path.join(TEMPLATES_DIR, 'store')
 
@@ -92,6 +90,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'frank_site.wsgi.application'
 
+ALLOWED_HOSTS = [
+    'https://thembatswai.com',
+    'https://www.thembatswai.com',
+    '127.0.0.1',
+    'localhost',
+    ]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -100,8 +104,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-
     }
+
 
 }
 
