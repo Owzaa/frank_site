@@ -17,4 +17,4 @@ urlpatterns = [
     path('blog', include('APPS.BLOG.urls')),
     path('payment/', include('APPS.PAYMENTS.urls')),
 
-] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

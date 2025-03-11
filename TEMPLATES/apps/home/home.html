@@ -1,192 +1,315 @@
 {% extends 'main/base.html' %}
 
 {% load static %}
+
 {% load django_bootstrap5 %}
 
 {% block content %}
+<div class="container-flex w-100 h- justify-content-center">
+	<!-- HERO_SECTION -->
+	<section class="hero-section align-items-center">    
+	
+		<!-- Hero_Overlayer-->
+		<div class="container hero-overlay">
+			<div class="container-flex position-absolute">
+				<div class="row mt-auto p- align-items-center">
+					<!-- Image Column -->
+					<div class="col-12 d-flex justify-content-start">
+						<div class="avatar-container mt-auto">
+							<img
+							src="{% static 'assets/icons/ThembaIcon.png' %}"
+							alt="Themba's professional avatar"
+							class="img-fluid d-flex"
+							>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Text Content Column -->
+		</div>
+		<!--End-->	
+	</section>
+	<!--END_SECTION-->
 
-<div class="main-container">
-  <section class="container-fluid" style="background-image: url({% static 'assets/hero-image.jpg' %}); background-size:cover;height:500px;margin-bottom:0px;">
-    <div class="row">
-        <div class="col-12 col-md-6 d-flex p-2">
-            <img
-                src="{% static 'assets/icons/ThembaIcon.png' %}"
-                alt="avatar-pic-themba"
-                class="img-flex d-flex"
-                width="65%"
-                height="95%"
-            >
-        </div>
-
-        <div class="col-12 col-md-6 d-flex flex-column justify-content-center">
-            <h2 class="display-6 text-center text-md-start text-shadow-head fw-bold mb-3">
-                <!-- Add your heading text here -->
-            </h2>
-            <p class="lead-4 text-center text-lg-start text-shadow-body mb-0">
-                <!-- Add your paragraph text here -->
-            </p>
-        </div>
-
-    </div>
-  </section>
-
-
-
-<!--SEASON_SCOOP_SECTION-->
-<div class="blog-ontainer mt-0">
-<div  class="row" style="display:flex;padding-bottom:.5rem;justify-content:center;">
-      <h1 class="text-center">Season Scoop</h1>
-
-  <div id="container-season_scoop" class="col-md-8 justify-center">
-      <!--CARD-->
-      {% for post in Post %}
-      <div id="" class="card mb-3 w-75">
-          <!--Header_Title-->
-          <div class="card-body">
-              <div class="row card-title mt-0">
-                <span id="author_title" class="d-inline-flex p-2">
-                  <img
-                  src="{% static 'assets/icons/ThembaIcon2.png' %}"
-                  alt="user-icon"
-                  class="d-inline-flex "
-                  style="width:17%; height:63;border-radius:100%;"
-                  >
-                  <small id="blog_author" class="d-flex p-2">
-                      <p class="text-sm mb-1">
-                      {{ post.author }}  Themba Tswai
-                      <br/>
-                      {{ post.published_at }}  19 June 2023
-                      </p>
-                  </small>
-
-                </span>
-              </div>
-
-              <h4 class="card-title">
-                {{ post.title }}  Unlearning to Relearn Creativity: Unlocking Your Inner Innovator
-              </h4>
-          </div>
-          <!--End-Title-->
-
-          <!--bodyContainer-->
-          <div class="card-body">
-
-                    <span id="author_title" class="d-inline-flex p-3">
-                      <small class="flex">
-                        <p> 62 views
-                            4 comments
-                        </p>
-
-
-                      </small>
-
-                    </span>
-
+<!-- SEASON_SCOOP_SECTION -->
+<section class="container-flex justify-center season_scoop-section mt-0 pt-0 mb-5 bg-white">
+    <div class="container ">
+        <!-- Section Header -->
+        <div class="container p-5">
+            <div class="col-12 text-center">
+                 <h1 class="display-5 fw-bold text-uppercase section-title position-relative">
+                    Season Scoop
+                    <span class="title-decoration position-absolute bottom-5 start-5 translate-middle-x bg-primary"></span>
+                </h1>
             </div>
-          <!--End-bodyContainer-->
-      </div>
-      {% endfor %}
-      <!--END_CARD-->
-  </div>
-</div>
-</div>
-<!--END_SEASON_SCOOP_SECTION-->
-
-
-<!--INTERESTS_SECTION-->
-<section class="interests" style="margin-top: 1rem">
-  <div id="interests-container" class="container-flex">
-
-  <div class="container  sliderTextHeader smooth-shadow-sm py-3 px-5 mb-5">
-    <h3 class="text-center text-muted rounded">Interests</h3>
-  </div>
-
-  <div class="content align-content-center">
-
-  </div>
-
-  </div>
-</section>
-<!--END_INTERESTS_SECTION-->
-
-
-<!--PRODUCT_SECTION-->
-<section class="products" style="margin-top: 1rem">
-  <div id="product-container" class="flex">
-
-      <div class=" sliderTextHeader smooth-shadow-sm py-3 px-5 mb-5">
-      <h3 class="text-lg text-center text-muted rounded">All Products</h3>
-      </div>
-      {{ product_slider }}
-
-
-        {% for item in  product %}
-
-        <div id="client-container-slider">
-
-
-              <div class="slider-content">
-
-                <img
-                src="{{ item.product_logo }}"
-                class="card-img-top ""
-                alt="{{ item.product_name }}"
-                width="100%"
-                height="auto"
-                >
-
-                <div class="card-body">
-                </div>
-                <div class="card-footer">
-                  <a id="view-project" href="{{ item.client_url }}" class="btn btn-primary">
-
-                  </a>
-                </div>
-
-              </div>
-
         </div>
 
-        {% endfor %}
+    <!-- Cards Container -->
+<div class="flex row d-block-inline gap-2 p-0 align-items-center">
+    {% for post in posts %}
+    <div class="container row col-12 col-md-6 col-lg-4 p-3">  <!-- Responsive column sizing -->
+        <div class="card border-0 shadow  hover-lift">
+            {% if post.featured_image %}
+            <div class="card-header border-0 bg-transparent">
+                <div class="d-flex align-items-center gap-5">
+                    <img src="{{ post.featured_image.url }}" 
+                         class="img-fluid d-block w-100 h-100" 
+                         alt="{{ post.title }}"
+                         style="width:100%; height:100%; 
+						 object-fit-content: center/cover;">
+                    
+				
+                </div>
+            </div>
+            {% endif %}
+				<span class="d-flex justify-content-between gap-2">
+                    <small class="section-title text-decoration-underline m-auto justify-content-center mr-0 ms-1 pt-0"> 
+					<i class="fas fa-user 1xl"></i> <b>{{post.author }}</b></small>
+					<small class="section-title text-decoration-underline mt-0 mr-4 p-0">
+					<b>Published:</b> {{ post.published_at|date:"M d, Y" }}</small>
+                </span>
+            <div class="card-body mt-0 pt-0">
+                <h2 class="section-title h3 fw-bold mt-0 mb-auto">{{ post.title }}</h2>
+                <p class="section-title mb-0">
+                    {{ post.content|truncatechars:18 }}
+                </p>
+            </div>
 
-
-
-  </div>
-</section>
-
-
-<!--CLIENT_SECTION-->
-<di id="clients">
-
-  <h2  class="clientHeaderText text-center">Happy Clients</h2>
-  <h6 class="text-center text-muted"> "building relationships that last forever" </h6>
-
-  {% for item in  client %}
-    <div id="client-container">
-
-        <div  class="row">
-
-          <img
-          src="{{ item.client_logo }}"
-          class="img-fluid "
-          alt="{{ item.client_name }}"
-          width="35%"
-          height="75"
-          >
-
-
-          <div class="card-footer">
-            <a id="view-project" href="{{ item.client_url }}" class="btn btn-primary">
-
-            </a>
-          </div>
-
+            <div class="card-footer bg-light border-0 d-flex justify-content-between align-items-center">
+                <div class="d-flex gap-3">
+                    <small class="section-title">
+                        <i class="fas fa-eye me-1"></i>{{ post.views_count }} views
+                    </small>
+                    <small class="section-title">
+						<i class="fas fa-comment me-1"></i>{{ post.comments_count }} comment
+                    </small>
+                </div>
+                
+                <div class="d-flex align-items-center gap-2">
+                    {% if post.categories %}
+                    <span class="badge bg-secondary">{{ post.name }}</span>
+                    {% endif %}
+                    <small class="text-default">
+                     {{ post.likes_count }}<i class="fas fa-heart bg-default"></i>
+                    </small>
+                </div>
+            </div>
         </div>
-
     </div>
-  {% endfor %}
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center py-5">
+            <i class="fas fa-info-circle fa-3x mb-3 text-info"></i>
+            <p class="h5 mb-0">Currently no articles available</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+        
+    </div>
+</section>
 
-</di>
-<!--END_CLIENT_SECTION-->
+	<!--INTERESTS_SECTION-->
+	<section class="container-flex interests-section" aria-label="Interest Areas" style="background:rgba(253, 156, 121, 0.14);padding:35px 35px">
+		<div class="container">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold text-uppercase section-title position-relative">
+                   Interests
+                    <span class="title-decoration"></span>
+                </h1>
+            </div>
+
+			<div class="cols cols-md cols-sm col-lg g-2">
+				<div class="row cols-lg-6 justify-content-center">
+					<div class="col interest-item">
+						<img src="{% static 'assets/Icons/interests/Icon1.png' %}" 
+						alt="icons" 
+						class="img-fluid interest-img" 
+						loading="lazy"
+						aria-hidden="true"
+						>
+					</div>
+			
+					<div class="col interest-item">
+				<img src="{% static 'assets/Icons/interests/Icon2.png' %}" 
+				alt="icons" 
+				class="img-fluid interest-img" 
+				loading="lazy"
+				aria-hidden="true"
+				>
+			</div>
+			
+					<div class="col interest-item">
+						<img src="{% static 'assets/Icons/interests/Icon3.png' %}" 
+						alt="icons" 
+						class="img-fluid interest-img" 
+						loading="lazy"
+						aria-hidden="true"
+						>
+					</div>
+			
+					<div class="col interest-item">
+				<img src="{% static 'assets/Icons/interests/Icon4.png' %}" 
+				alt="icons" 
+				class="img-fluid interest-img" 
+				loading="lazy"
+				aria-hidden="true"
+				>
+			</div>
+				</div>
+
+				<div class="row cols-lg-6 justify-content-center">
+
+			<div class="col interest-item">
+				<img src="{% static 'assets/Icons/interests/Icon5.png' %}" 
+				alt="icons" 
+				class="img-fluid interest-img" 
+				loading="lazy"
+				aria-hidden="true"
+				>
+			</div>
+			<div class="col interest-item">
+				<img src="{% static 'assets/Icons/interests/Icon6.png' %}" 
+				alt="icons" 
+				class="img-fluid interest-img" 
+				loading="lazy"
+				aria-hidden="true"
+				>
+			</div>
+			<div class="col interest-item">
+				<img src="{% static 'assets/Icons/interests/Icon7.png' %}" 
+				alt="icons" 
+				class="img-fluid interest-img" 
+				loading="lazy"
+				aria-hidden="true"
+				>
+			</div>
+				<div class="col interest-item">
+				<img src="{% static 'assets/Icons/interests/Icon8.png' %}" 
+				alt="icons" 
+				class="img-fluid interest-img" 
+				loading="lazy"
+				aria-hidden="true"
+				>
+				</div>
+			</div>
+			</div>
+		</div>
+	</section>
+	<!--END_INTERESTS_SECTION-->
+
+	<!--CLIENT_SECTION-->
+	<section class="clients py-auto  position-relative overflow-hidden">
+		<div class="container-flex">
+		            <div class="col-12 text-center">
+					<h1 class="display-5 fw-bold section-title text-uppercase position-relative">
+					Happy Clients
+					</h1>
+                <span class="title-decoration text-small text-muted">
+					<i>"Building relationships that last forever"</i>
+				</span>
+            </div>
+
+    <div class="marquee-container">
+      <div class="marquee-track container-flex">
+        {% for item in client %}
+        <div class="marquee-item">
+          <a href="{{ item.client_url }}" class="client-card d-block" aria-label="{{ item.client_name }} website">
+            <img src="{{ item.client_logo }}" 
+                 alt="{{ item.client_name }} logo" 
+                 class="img-flex client-logo" 
+                 loading="lazy">
+          </a>
+        </div>
+        {% endfor %}
+        <!-- Duplicate items for continuous loop -->
+        {% for item in client %}
+        <div class="marquee-item">
+          <a href="{{ item.client_url }}" class="client-card d-block" aria-label="{{ item.client_name }} website">
+            <img src="{{ item.client_logo }}" 
+                 alt="{{ item.client_name }} logo" 
+                 class="img-flex client-logo" 
+                 loading="lazy">
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+	</div>
+		</div>
+	</section>
+	<!--END_CLIENT_SECTION-->
+
 </div>
 {% endblock %}
+
+<!--CSS CUSTOM STYLE-->
+{% block extra_css %}
+<style>
+.section-title {
+    color: #AA4D2A;
+    letter-spacing: 1.5px;
+}
+.title-decoration {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #AA4D2A;
+    border-radius: 2px;
+}
+.hover-lift {
+    transition: all 0.5s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(170, 77, 42, 0.1);
+}
+.text-primary-dark {
+    color: #2d3748;
+}
+.bg-light {
+    background: #f8f9fa !important;
+}
+.shadow-hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+.btn-link:hover {
+    letter-spacing: 0.5px;
+}
+.interests-section{
+justify-content: center;
+align-items:center;
+width:100%;
+}
+.shadow-hover {
+transition: all 0.3s ease;
+}
+.shadow-hover:hover {
+transform: translateY(-5px);
+box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+}
+.section-title {
+color: #AA4D2A !important;
+}
+.interest-item{
+width:100%;
+height:50px;
+transition: transform 0.3s ease;
+}
+.interest-item:hover {
+transform: scale(1.05);
+}
+.interest-item, img {
+filter: grayscale(100%);
+transition: filter 0.3s ease;
+}
+.interest-item:hover .interest-img {
+filter: grayscale(0%);
+}
+</style>
+{% endblock %}
+

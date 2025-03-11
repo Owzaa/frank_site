@@ -2,51 +2,81 @@
 
 {% load static %}
 
-{% block title %}
-My-Portfolio
-{% endblock %}
+{% block title %} My-Portfolio {% endblock %}
 
 {% block content %}
-<div id="portfolio-wrapper" class="container-fluid">
-    <h1 id="portfolio-text-header"></h1>
+<div class="container-flex portfolio-wrapper px-lg-5 px-md-3">
+    <!-- Section Header -->
 
+
+        <!-- Section Header -->
+        <div class="col-12 text-center">
+            <h1 class="display-3 fw-bold p-5 text-uppercase section-title position-relative">
+                PORTFOLIO
+                <span class="title-decoration position-absolute bottom-0 start-10 translate-middle-x bg-primary"></span>
+            </h1>
+        </div>
+    </div>
+
+    <!-- Categories Sidebar -->
+    <div class="col-6 col-md-4 mb-4">
+        <div class="card shadow border-0 h-100">
+            <div class="card-body">
+                <h5 class="section-title  fw-bolder mb-4 border-bottom-light text-uppercase">Categories</h5>
+                <div class="list-group">
+                    {% for category in categories %}
+                    <a href="{% url 'portfolio_category' category.slug %}" class="text-decoration-none">
+                        {{ category.name }}
+                    </a>
+                    {% empty %}
+                    <div class="section-title text-danger">No categories available</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
     {% if proj_count == 0 %}
-      <div class="container" id="project-count-container">
-        <span class="container-flex">
-          <h1>{{ proj_count }}</h1>
-          <h4>projects uploaded .....</h4>
-        </span>
-      </div>
+    <div class="empty-state text-center py-5">
+        <h1 class="display-1 fw-bold text-muted">{{ proj_count }}</h1>
+        <h4 class="text-uppercase tracking-wide">Projects Coming Soon</h4>
+    </div>
     {% endif %}
 
 
-    {% comment %} PORTFOLIO-CONTAINER-GRID {% endcomment %}
     {% if proj_count > 0 %}
-      <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-4">
-
-        {% comment %} PORTFOLIO_CONTENT {% endcomment %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-6 row-cols-xl-4 g-4">
         {% for project in projects %}
-        <div id="porfolio-container-grid" class="container-flex">
-          <a href="{% url 'project_detail' project.pk %}" class="item-link" >
-            <div id="card-content" class="card-body">
-              <img id="proj_img" width="100%" src="{{ project.project_logo }}" class="img-fluid h-100 w-100"
-              alt="{{ item.project_title }}" >
+        <div class="col">
+            <a href="{% url 'project_detail' project.pk %}"
+                class="portfolio-card card border-0 overflow-hidden text-decoration-none">
+                <div class="image-container position-relative">
+                    <img src="{{ project.project_logo }}" alt="{{ project.project_title }}"
+                        class="card-img-top img-fluid scale-transition" loading="lazy">
 
-              <div id="portfolio-footer" class="card-footer">
-              <a id="portfolio-btn" href="{% url 'project_detail' project.pk %}"
-              class="btn btn-md btn-button-block"> → </a>
-              </div>
+                    <div class="card-overlay position-absolute w-100 h-100">
+                        <div class="overlay-content position-absolute">
+                            <h3 class="project-title text-white mb-2">{{ project.project_title }}</h3>
+                            <p class="project-category text-uppercase text-primary mb-0">{{ project.category }}</p>
+                        </div>
+                    </div>
+                </div>
 
-            </div>
-          </a>
+                <div class="card-footer  border-0 py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted small">{{ project.date|date:"M Y" }}</span>
+                        <span class="view-project-btn d-flex align-items-center">
+                            View Project
+                            <i class="bi bi-arrow-right-circle ms-2"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
         </div>
         {% endfor %}
-        {% comment %} END_CONTENT {% endcomment %}
-
-      </div>
+    </div>
     {% endif %}
-  {% comment %} END_CONTAINER_GRID {% endcomment %}
 
+</div>
 
 </div>
 {% endblock %}

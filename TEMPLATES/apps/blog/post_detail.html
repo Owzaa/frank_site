@@ -1,0 +1,130 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block meta_description %}{{ post.content|truncatechars:160 }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Back Button -->
+            <a href="{% url 'blog' %}" class="btn btn-outline-secondary mb-4">
+                <i class="fas fa-arrow-left me-2"></i>Back to Blog
+            </a>
+
+            <!-- Featured Image -->
+            {% if post.featured_image %}
+            <div class="mb-4">
+                <img src="{{ post.featured_image.url }}" 
+                     alt="{{ post.title }}" 
+                     class="img-fluid rounded-3 shadow"
+                     style="max-height: 500px; object-fit: cover;">
+            </div>
+            {% endif %}
+
+            <!-- Post Content -->
+            <article>
+                <header class="mb-4">
+                    <h1 class="fw-bold mb-3">{{ post.title }}</h1>
+                    <div class="d-flex justify-content-between text-muted small mb-3">
+                        <div>
+                            <span class="me-3">
+                                <i class="fas fa-user me-1"></i>{{ post.author }}
+                            </span>
+                            <span>
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                {{ post.published_at|date:"M d, Y" }}
+                            </span>
+                        </div>
+                        <div>
+                            {% if post.category %}
+                            <span class="badge bg-primary">
+                                {{ post.category.name }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </header>
+
+                <div class="post-content fs-5" style="line-height: 1.8;">
+                    {{ post.content|linebreaks }}
+                </div>
+            </article>
+
+            <!-- Related Posts -->
+            {% if related_posts %}
+            <section class="mt-5 pt-4 border-top">
+                <h4 class="mb-4 fw-bold">Related Posts</h4>
+                <div class="row g-4">
+                    {% for related in related_posts %}
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            {% if related.featured_image %}
+                            <img src="{{ related.featured_image.url }}" 
+                                 class="card-img-top" 
+                                 alt="{{ related.title }}"
+                                 style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="{% url 'post_detail' related.slug %}" 
+                                       class="text-decoration-none text-dark">
+                                        {{ related.title }}
+                                    </a>
+                                </h5>
+                                <div class="text-muted small">
+                                   {{ post.published_at|date:"M d, Y" }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+.post-content p {
+    margin-bottom: 1.5rem;
+}
+
+.post-content h2,
+.post-content h3 {
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.post-content ul,
+.post-content ol {
+    padding-left: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.post-content blockquote {
+    border-left: 4px solid #0d6efd;
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.back-btn:hover {
+    transform: translateX(-5px);
+    transition: transform 0.2s ease-in-out;
+}
+{% endblock %}

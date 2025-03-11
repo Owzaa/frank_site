@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent
 SECRET_KEY = 'django-insecure-zayj=w%8apcy@y4c)k6kj=z#5g574=wt#pq!))l5lhzse(0+$&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 # APPLICATION_DIR
@@ -90,12 +90,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'frank_site.wsgi.application'
 
-ALLOWED_HOSTS = [
-    'https://thembatswai.com',
-    'https://www.thembatswai.com',
-    '127.0.0.1',
-    'localhost',
-    ]
+ALLOWED_HOSTS = ['*']
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -144,8 +139,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'HOME/static/')
+STATIC_URL = 'static/'
 STATIC_IMAGES = '/images/'
 STATIC_MEDIA = '/media/'
 

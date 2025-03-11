@@ -1,0 +1,25 @@
+nav{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar{
+  display:flex;
+  justify-content: center;
+  margin:auto;
+}
+footer{
+  margin-top: 100vh;
+  color: gray;
+}
+
+
+
+p  {
+  display: flex;
+  justify-content: center;
+  color:#727272;
+}
+
+

@@ -13,7 +13,7 @@
       <div class="carousel-indicators">
       {% for item in product %}
 
-        <button type="button" data-slide-target="#productCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+        <button class="btn " type="button" data-slide-target="#productCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
         {% if forloop.first %}
         class="active"
         {% endif %}

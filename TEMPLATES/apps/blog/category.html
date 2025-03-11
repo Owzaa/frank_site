@@ -1,0 +1,139 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block title %}{{ category.name }} Posts{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <!-- Category Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="fw-bold">
+                    Posts in: <span class="text-muted ">{{ category.name }}</span>
+                </h1>
+                <a href="{% url 'blog' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>All Categories
+                </a>
+            </div>
+
+            <!-- Search Form -->
+            <form method="GET" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" 
+                           placeholder="Search within category..." 
+                           value="{{ request.GET.q }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Posts List -->
+            {% if posts %}
+            <div class="row container-flex g-4">
+                {% for post in posts %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                        {% if post.featured_image %}
+                        <img src="{{ post.featured_image.url }}" 
+                             class="card-img-top" 
+                             alt="{{ post.title }}"
+                             style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between small text-muted mb-2">
+                                <div>{{ post.published_at|date:"M d, Y" }}</div>
+                                <div>
+                                    {% if post.category %}
+                                    <span class="badge bg-primary">
+                                        {{ post.category.name }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <h5 class="card-title">
+                                <a href="{% url 'post_detail' post.slug %}" 
+                                   class="text-decoration-none text-dark">
+                                    {{ post.title }}
+                                </a>
+                            </h5>
+                            <p class="card-text text-muted">
+                                {{ post.content|truncatechars:100 }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <nav class="mt-5" aria-label="Pagination">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" 
+                           href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                            Previous
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" 
+                           href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                            {{ num }}
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" 
+                           href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                            Next
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+            {% else %}
+            <div class="alert alert-info mt-4">
+                No posts found in this category.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+.hover-lift {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.pagination .page-link {
+    border-radius: 8px;
+    margin: 0 3px;
+    min-width: 38px;
+    text-align: center;
+}
+.badge-category {
+    font-size: 0.9em;
+    padding: 0.4em 0.8em;
+}
+{% endblock %}

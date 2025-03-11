@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'portfolio_categories' %}">Portfolio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-4">{{ category.name }} Projects</h1>
+
+    <div class="row g-4">
+        {% for item in items %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ item.featured_image.url }}"
+                     class="card-img-top"
+                     alt="{{ item.title }}"
+                     style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h2 class="card-title h5">
+                        <a href="{% url 'portfolio_detail' category.slug item.slug %}"
+                           class="text-decoration-none">
+                            {{ item.title }}
+                        </a>
+                    </h2>
+                    <div class="d-flex justify-content-between small text-muted">
+                        <span>{{ item.client }}</span>
+                        <span>{{ item.project_date|date:"M Y" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
