@@ -43,7 +43,7 @@ def portfolio_categories(request):
     context = {
         'categories': categories
     }
-    return render(request, 'portfolio/categories.html', context)
+    return render(request, 'portfolio/category_items.html', context)
 
 def portfolio_category(request,category_slug):
     category = get_object_or_404(PortfolioCategory, slug=category_slug)
