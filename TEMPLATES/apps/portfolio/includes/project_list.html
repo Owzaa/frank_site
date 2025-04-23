@@ -1,8 +1,8 @@
 {% if projects %}
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+<div class="grid col row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     {% for project in projects %}
     <div class="col" data-aos="fade-up">
-        <div class="project-card h-100 shadow-sm">
+        <div class="project-card h-100 shadow-md" style="border-color: var(--border)">
             <img src="{{ project.thumbnail.url }}" class="card-img-top" alt="{{ project.title }}">
             <div class="p-4">
                 <h5 class="fw-bold mb-3">{{ project.title }}</h5>

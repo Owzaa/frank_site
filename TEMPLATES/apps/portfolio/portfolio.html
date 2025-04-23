@@ -6,79 +6,243 @@
 {% block content %}
 <style>
     :root {
-        --primary: #6366f1;
-        --primary-hover: #4f46e5;
-        --secondary: #8b5cf6;
+        /* Primary Color Scheme */
+        --primary: #aa4c2aa1;
+        --primary-hover: #fafafa;
+        --primary-light: #AA4D2A;
+        --primary-soft: #d34f1f;
+
+        /* Supporting Colors */
+        --secondary: #eb613e;
         --accent: #10b981;
-        --dark: #1e293b;
+        --dark: #AA4D1A;
         --light: #f8fafc;
+        --text: #e9e7e6;
+        --border: #ffffffef;
     }
 
-    .portfolio-header {
+  /* Add these styles to your existing CSS */
+  .portfolio-header {
         position: relative;
-        padding: 5rem 0 3rem;
-        background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(255,255,255,1) 100%);
-        margin-bottom: 3rem;
+        overflow: hidden;
+        height:50%;
     }
 
     .portfolio-header h1 {
-        font-family: 'Inter', sans-serif;
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        color: var(--dark);
+        position: relative;
+        color: var(--primary);
+        overflow: hidden;
+        white-space: nowrap;
+        margin: 0 auto;
+        letter-spacing: .13em;
+        animation: 
+            typing 3.5s steps(50, end),
+            blink-caret .75s infinite,
+            text-glitch 2s infinite 4s;
     }
 
-    .portfolio-header h1::after {
+    .portfolio-header::before,
+    .portfolio-header::after {
         content: '';
         position: absolute;
-        bottom: -1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 120px;
-        height: 4px;
-        background: var(--primary);
-        border-radius: 2px;
-        animation: lineExpand 0.8s ease-out;
+        width: 150px;
+        height: 150px;
+        background: rgba(99, 102, 241, 0.1);
+        filter: blur(60px);
+        animation: float 12s infinite;
     }
 
+    .portfolio-header::before {
+        top: 50%;
+        left: 10%;
+        background: var(--primary-soft);
+    }
+
+    .portfolio-header::after {
+        top: 60%;
+        right: 10%;
+        background: var(--secondary);
+        animation-delay: -4s;
+    }
+
+    .lead {
+        opacity: 0;
+        animation: 
+            fadeInUp 1s ease-out forwards,
+            subtitle-glitch 1s infinite 4.5s;
+        animation-delay: 3.5s;
+    }
+
+    @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+        from, to { border-right-color: transparent }
+        100% { border-right-color: var(--primary); }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+            transform: translate(50px, -50px) rotate(15deg);
+        }
+        50% {
+            transform: translate(-30px, 30px) rotate(-15deg);
+        }
+        75% {
+            transform: translate(-50px, 50px) rotate(10deg);
+        }
+    }
+
+    @keyframes text-glitch {
+        0% {
+            text-shadow: none;
+        }
+        93% {
+            text-shadow: none;
+        }
+        94% {
+            text-shadow: 2px 0 var(--secondary), -2px 0 var(--accent);
+        }
+        95% {
+            text-shadow: -3px 0 var(--secondary), 3px 0 var(--accent);
+        }
+        96% {
+            text-shadow: 4px 0 var(--secondary), -4px 0 var(--accent);
+        }
+        97% {
+            text-shadow: -5px 0 var(--secondary), 5px 0 var(--accent);
+        }
+        98% {
+            text-shadow: none;
+        }
+    }
+
+    @keyframes subtitle-glitch {
+        0%, 100% {
+            transform: translateX(0);
+        }
+        95% {
+            transform: translateX(2px);
+        }
+        96% {
+            transform: translateX(-3px);
+        }
+        97% {
+            transform: translateX(4px);
+        }
+        98% {
+            transform: translateX(-2px);
+        }
+    }
+
+    /* Animated gradient mesh background */
+    .portfolio-header::backdrop {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 500px;
+        background: 
+            linear-gradient(45deg, var(--primary-soft) 10%, 
+            rgba(255,255,255,0.8) 50%, 
+            var(--secondary-soft) 100%);
+        opacity: 0.1;
+        z-index: -1;
+        animation: gradient-move 20s infinite alternate;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            background-position: 0% 0%;
+        }
+        100% {
+            background-position: 100% 100%;
+        }
+    }
+
+
+
+
+
+
+    /* Updated Category Filter Styles */
     .category-card {
-        background: white;
-        border: 1px solid rgba(99,102,241,0.1);
-        border-radius: 12px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .category-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 15px -3px rgba(99,102,241,0.1);
+        background: var(--light);
+        border-color: var(--primary-soft);
     }
 
     .list-group-item {
-        border: none;
-        padding: 1rem 1.5rem;
+        display: flex;
         color: var(--dark);
-        font-weight: 500;
-        transition: all 0.2s ease;
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .list-group-item:not(.active):hover {
+        color: var(--primary);
+        background: rgba(255, 255, 255, 0.9);
+        padding-left: 5rem;
+        transform: translateX(1px);
     }
 
     .list-group-item.active {
         background: var(--primary);
-        color: white;
+        color: white !important;
         border-radius: 8px;
+        border:none;
+        box-shadow: 0 4px 6px -1px rgba(214, 155, 79, 0.788);
     }
 
-    .list-group-item:not(.active):hover {
-        background: rgba(99,102,241,0.05);
-        padding-left: 2rem;
+    .list-group-item.active::before {
+        content: list;
+        position: absolute;
+        left: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 60%;
+        background: var(--primary-hover);
+        border-radius: 2px;
+    }
+
+    .category-title {
+        color: var(--primary);
+        letter-spacing: -0.03em;
+        border-bottom: 2px solid var(--primary-soft);
+        padding-bottom: 0.5rem;
     }
 
     @keyframes lineExpand {
-        0% { width: 0; opacity: 0; }
-        100% { width: 120px; opacity: 1; }
+        0% {
+            width: 0;
+            opacity: 0;
+        }
+
+        100% {
+            width: 120px;
+            opacity: 1;
+        }
     }
 
     .project-card {
-        border: none;
+        border: 1px solid var(--border);
         border-radius: 16px;
         overflow: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -87,7 +251,7 @@
 
     .project-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
     }
 
     .loading-overlay {
@@ -95,7 +259,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(255,255,255,0.9);
+        background: rgba(243, 243, 243, 0.95);
         border-radius: 16px;
     }
 
@@ -103,52 +267,86 @@
         width: 4rem;
         height: 4rem;
         border-width: 0.2em;
+        color:#AA4D2A;
+    }
+
+    /* Pagination Styling */
+    .pagination .page-item.active .page-link {
+        background: var(--primary);
+        border-color: var(--primary);
+    }
+
+    .pagination .page-link {
+        color: var(--primary);
+    }
+
+    .pagination .page-link:hover {
+        color: var(--primary-hover);
+    }
+
+    /* Error State */
+    .alert-danger {
+        background: #ffffff;
+        border-color: #faf4f444;
+        color: #AA4D2A;
+    }
+
+    /* Text Colors */
+    .text-muted {
+        color: #c28867 !important;
     }
 </style>
 
-<div class="portfolio-header">
-    <div class="container">
+<div class="portfolio-header p-1">
+    <div class="container-flex p-5 ">
         <div class="row">
             <div class="col-12 text-center">
-                <h1 class="display-3 fw-bold">My Work</h1>
+            
+                
+                <h1 class="display-3 fw-bold">PORTFOLIO</h1>
                 <p class="lead text-muted mt-3">Showcasing innovation through design and development</p>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container py-5">
-    <div class="row g-4">
+<div class="container">
         <!-- Sidebar Categories -->
-        <div class="col-lg-3">
-            <div class="category-card p-3 shadow-sm">
-                <h5 class="fw-bold text-uppercase mb-3 text-primary">Filter Work</h5>
-                <div class="list-group">
-                    <a href="{% url 'portfolio' %}" 
-                       class="list-group-item list-group-item-action {% if not selected_category %}active{% endif %}">
-                        All Projects
-                    </a>
-                    {% for category in categories %}
-                    <a href="{% url 'portfolio_categories' category_slug=category.slug %}" 
-                       class="list-group-item list-group-item-action {% if category.slug == selected_category.slug %}active{% endif %}">
-                        {{ category.name }}
-                    </a>
-                    {% empty %}
-                    <div class="text-muted small p-3">No categories available</div>
-                    {% endfor %}
-                </div>
+    <div class="row container-flex">
+        <!-- Update the category card HTML -->
+        <div class="col row-cols-lg col-md">
+            <h5 class="fw-light p-3 category-title">Filter Work</h5>
+            <div class="list-group">
+                <a href="{% url 'portfolio' %}"
+                    class="list-group-item list-group-item-action {% if not selected_category %}active{% endif %}">
+                    All Projects
+                    <span class="badge bg-primary-soft text-primary float-end">
+                        {{ total_projects }}
+                    </span>
+                </a>
+                {% for category in categories %}
+                <a href="{% url 'portfolio_categories' category_slug=category.slug %}"
+                    class="list-group-item list-group-item-action {% if category.slug == selected_category.slug %}active{% endif %}">
+                    {{ category.name }}
+                    <span class="badge bg-primary-dark text-primary float-end">
+                    {{ category.project_count }}
+                    </span>
+                </a>
+                {% empty %}
+                <div class="text-muted small p-3">No categories available</div>
+                {% endfor %}
             </div>
         </div>
 
+
         <!-- Projects Grid -->
-        <div class="col-lg-9">
-            <div id="project-list" class="row g-4">
+        <div class="col row-cols-lg-9 col-md">
+            <div id="project-list row" class="row g-4">
                 {% include 'portfolio/includes/project_list.html' %}
             </div>
         </div>
     </div>
 </div>
-
 <script>
     // Enhanced AJAX handling
     function loadProjects(url) {
@@ -156,8 +354,8 @@
         projectList.innerHTML = `
             <div class="loading-overlay">
                 <div class="text-center">
-                    <div class="spinner-border spinner-large text-primary" role="status"></div>
-                    <div class="mt-3 fs-5 text-primary fw-medium">Curating Projects...</div>
+                    <div class="spinner-border spinner-large text-primary" role="status" style="color: var(--primary) !important"></div>
+                    <div class="mt-3 fs-5 fw-medium" style="color: var(--primary)">Curating Projects...</div>
                 </div>
             </div>
         `;
@@ -165,26 +363,26 @@
         fetch(url, {
             headers: { 'X-Requested-With': 'XMLHttpRequest' },
         })
-        .then(response => {
-            if (!response.ok) throw new Error(response.status);
-            return response.json();
-        })
-        .then(data => {
-            projectList.innerHTML = data.html;
-            history.replaceState(null, '', url);
-            AOS.refresh();
-        })
-        .catch(error => {
-            projectList.innerHTML = `
+            .then(response => {
+                if (!response.ok) throw new Error(response.status);
+                return response.json();
+            })
+            .then(data => {
+                projectList.innerHTML = data.html;
+                history.replaceState(null, '', url);
+                AOS.refresh();
+            })
+            .catch(error => {
+                projectList.innerHTML = `
                 <div class="alert alert-danger" role="alert">
                     Error loading projects. Please try again later.
                 </div>
             `;
-        });
+            });
     }
 
     // Smooth scroll to top on navigation
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.list-group-item').forEach(link => {
             link.addEventListener('click', () => {
                 window.scrollTo({
@@ -193,6 +391,21 @@
                 });
             });
         });
+    });
+
+    // Contrast Check (requires chroma.js)
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof chroma !== 'undefined') {
+            const primary = getComputedStyle(document.documentElement)
+                .getPropertyValue('--primary').trim();
+            const textColor = getComputedStyle(document.documentElement)
+                .getPropertyValue('--text').trim();
+
+            const contrast = chroma.contrast(primary, textColor);
+            if (contrast < 4.5) {
+                console.warn(`Low contrast ratio: ${contrast.toFixed(1)}:1 between primary and text colors`);
+            }
+        }
     });
 </script>
 
