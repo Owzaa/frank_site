@@ -1,0 +1,47 @@
+<h1>
+    {% if category %}
+        Projects in {{ category.name }}
+    {% else %}
+        All Projects
+    {% endif %}
+</h1>
+
+<div class="project-list">
+    {% for project in page_obj %}
+        <div class="project-item">
+            <h2>{{ project.title }}</h2>
+            <!-- Add more project details -->
+        </div>
+    {% empty %}
+        <p>No projects found.</p>
+    {% endfor %}
+</div>
+
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+</div>
+
+<!-- Optional: sidebar with categories -->
+<div class="categories-sidebar">
+    <h3>Categories</h3>
+    <ul>
+        {% for cat in categories %}
+            <li>
+                <a href="{% url 'portfolio_categories' category_slug=cat.slug %}"
+                   {% if cat == category %}class="active"{% endif %}>
+                   {{ cat.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

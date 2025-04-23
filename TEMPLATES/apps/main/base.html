@@ -1,327 +1,350 @@
+<!DOCTYPE html>
+
 {% load static %}
 {% load django_bootstrap5 %}
-<!DOCTYPE html>
-<html lang="en-us" class="h-100">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      {% block title %}
-        Themba Tswai
-      {% endblock %}
-    </title>
+
+<html lang="en">
+  <head>  
+    <meta-charset charset="UTF-8" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta-viewport name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+    <title>{% block title %} Themba Tswai |  {% endblock %} </title>
 
     {% bootstrap_css %}
     {% bootstrap_javascript %}
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/home_base.css' %}" />
-  </head>
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+</head>
 
 <style>
-/* Fixed height and overflow control */
-html {
+  /* Fixed height and overflow control */
+  html {
     height: 100%;
     overflow-x: hidden;
-}
+  }
 
-body {
+  body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     margin: 0;
     padding: 0;
     width: 100%;
-}
+  }
 
-/* Main content area should grow */
-.main-container {
-    flex:1 auto;
+  /* Main content area should grow */
+  .main-container {
+    flex: 1 auto;
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
-}
+  }
 
-/* Footer should stay at bottom */
-.footer {
+  /* Footer should stay at bottom */
+  .footer {
     flex-shrink: 0;
-}
+  }
 
-/* Ensure content containers are full width */
-.container section {
-  display:flex important!;
-  justify-content: space-evenly;
-  justify-content: center;
-  align-items: center;
-    padding:0;
-    padding:0;
-}
+  /* Ensure content containers are full width */
+  .container section {
+    display: flex important !;
+    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    padding: 0;
+  }
 
-/* Hero section adjustments */
-.hero-section {
+  /* Hero section adjustments */
+  .hero-section {
     width: 100%;
     height: 100%;
     min-height: 450px;
 
     background: linear-gradient(rgba(224, 222, 222, 0.04), rgba(179, 179, 179, 0.69)),
-              url({% static 'assets/hero-image.jpg'%}) center/cover;
-} 
-.hero-overlay {
-  display:flex;
-  position:absolute;
-  margin-top: 135px;
-  left:0;
-  width:100%;
-  height: auto;
-  z-index:1;
-}
-/* Navigation fix */
-.navbar {
-	display:flex;
+    url( 'static/assets/hero-image.jpg') center/cover;
+  }
+
+  .hero-overlay {
+    display: flex;
+    position: absolute;
+    margin-top: 135px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+  }
+
+  /* Navigation fix */
+  .navbar {
+    display: flex;
     width: 100%;
     position: sticky;
     top: 0;
     z-index: 1020;
-}
-
-.avatar-container {
-  max-width: 300px;
-  transition: transform 0.3s ease;
-}
-
-.avatar-container:hover {
-  transform: scale(1.05);
-}
-
-.hero-title {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  line-height: 1.2;
-}
-
-
-.client-img{
-  display:flex;
-  width:auto;
-  max-height:auto;
-}
-
-
-
-@media (min-width: 768px) {
-  .hero-text {
-    margin-left: 0;
-    margin-right: 0;
   }
-  
-  .avatar-container img {
-    max-width: 100%;
+
+  .avatar-container {
+    max-width: 300px;
+    transition: transform 0.3s ease;
   }
-}
+
+  .avatar-container:hover {
+    transform: scale(1.05);
+  }
+
+  .hero-title {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
+  }
+
+
+  .client-img {
+    display: flex;
+    width: auto;
+    max-height: auto;
+  }
 
 
 
-.section-title {
+  @media (min-width: 768px) {
+    .hero-text {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .avatar-container img {
+      max-width: 100%;
+    }
+  }
+
+
+
+  .section-title {
     color: #AA4D2A;
     letter-spacing: 1.5px;
-}
+  }
 
-.hover-lift {
+  .hover-lift {
     transition: all 0.3s ease;
     border-radius: 12px;
     overflow: hidden;
-}
-.hover-lift:hover {
+  }
+
+  .hover-lift:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(170, 77, 42, 0.1);
-}
-.text-primary-dark {
+  }
+
+  .text-primary-dark {
     color: #2d3748;
-}
-.bg-light {
+  }
+
+  .bg-light {
     background: #f8f9fa !important;
-}
-.shadow-hover {
+  }
+
+  .shadow-hover {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-}
-.btn-link:hover {
+  }
+
+  .btn-link:hover {
     letter-spacing: 0.5px;
-}
-.interests-section{
-  display:flex important!;
-justify-content: center;
-align-items:center;
-width:100%;
-}
-.shadow-hover {
-transition: all 0.3s ease;
-}
-.shadow-hover:hover {
-transform: translateY(-5px);
-box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
-}
-.section-title {
-color: #AA4D2A !important;
-}
+  }
 
-.interest-item:hover {
-transform: scale(1.05);
-}
+  .interests-section {
+    display: flex important !;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .shadow-hover {
+    transition: all 0.3s ease;
+  }
+
+  .shadow-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
+  }
+
+  .section-title {
+    color: #AA4D2A !important;
+  }
+
+  .interest-item:hover {
+    transform: scale(1.05);
+  }
 
 
-.client-card {
-  transition: transform 0.5s ease, opacity 0.5s ease;
-}
+  .client-card {
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
 
-.client-card:hover {
-  transform: translateY(-5px);
-  opacity: 0.9;
-}
+  .client-card:hover {
+    transform: translateY(-5px);
+    opacity: 0.9;
+  }
 
-.client-logo {
-  filter: grayscale(100%);
-  opacity: 0.7;
-  transition: filter 0.3s ease, opacity 0.3s ease;
-}
-
-.client-card:hover .client-logo {
-  filter: grayscale(10%);
-  opacity: 1;
-}
-
-@media (max-width: 768px) {
   .client-logo {
-    max-width: 100px !important;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: filter 0.3s ease, opacity 0.3s ease;
   }
-}
-.marquee-container {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-}
 
-.marquee-track {
-  display: flex;
-  animation: marquee 30s linear infinite;
-  width: max-content;
-}
+  .client-card:hover .client-logo {
+    filter: grayscale(10%);
+    opacity: 1;
+  }
 
-.marquee-item {
-  flex: 0 0 auto;
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-  transition: transform 0.3s ease;
-}
+  @media (max-width: 768px) {
+    .client-logo {
+      max-width: 100px !important;
+    }
+  }
 
-.client-logo {
-  max-width: 100px;
-  height: auto;
-  filter: grayscale(100%);
-  opacity: 0.7;
-  transition: all 0.5s ease;
-}
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
 
-.client-card:hover .client-logo {
-  filter: grayscale(0%);
-  opacity: 1;
-  transform: scale(1.05);
-}
+  .marquee-track {
+    display: flex;
+    animation: marquee 30s linear infinite;
+    width: max-content;
+  }
 
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@media (max-width: 768px) {
   .marquee-item {
-    padding: 0 .5rem;
+    flex: 0 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
   }
+
   .client-logo {
     max-width: 100px;
+    height: auto;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.5s ease;
   }
-  .marquee-track {
-    animation-duration: 20s;
+
+  .client-card:hover .client-logo {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
   }
-}
-.portfolio-card {
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .marquee-item {
+      padding: 0 .5rem;
+    }
+
+    .client-logo {
+      max-width: 100px;
+    }
+
+    .marquee-track {
+      animation-duration: 20s;
+    }
+  }
+
+  .portfolio-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background: linear-gradient(145deg,rgba(231, 231, 231, 0.56) 0%,rgba(255, 255, 255, 0.63) 100%);
-    border-radius: 12px !important;  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
+    background: linear-gradient(145deg, rgba(231, 231, 231, 0.56) 0%, rgba(255, 255, 255, 0.63) 100%);
+    border-radius: 12px !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
 
-.portfolio-card:hover {
+  .portfolio-card:hover {
     transform: translateY(-5px);
-  
-}
 
-.image-container {
+  }
+
+  .image-container {
     aspect-ratio: 16/9;
-}
+  }
 
-.card-overlay {
+  .card-overlay {
     background: linear-gradient(180deg, rgba(153, 76, 5, 0.32) 0%, rgba(170, 76, 42, 0.68) 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
     bottom: 0;
-}
+  }
 
-.portfolio-card:hover .card-overlay {
+  .portfolio-card:hover .card-overlay {
     opacity: 1;
-}
+  }
 
-.overlay-content {
+  .overlay-content {
     bottom: 1rem;
     left: 1.5rem;
     right: 1.5rem;
-}
+  }
 
-.project-title {
+  .project-title {
     font-size: 1.25rem;
     text-shadow: 0 2px 4px rgba(104, 104, 104, 0.34);
-}
+  }
 
-.project-category {
+  .project-category {
     font-size: 0.75rem;
     letter-spacing: 1px;
     font-weight: 600;
-}
+  }
 
-.scale-transition {
+  .scale-transition {
     transition: transform 0.3s ease;
-}
+  }
 
-.portfolio-card:hover .scale-transition {
+  .portfolio-card:hover .scale-transition {
     transform: scale(1.03);
-}
+  }
 
-.view-project-btn {
+  .view-project-btn {
     padding: 5px 5px 5px 5px;
-    color:rgba(71, 71, 71, 0.66);
+    color: rgba(71, 71, 71, 0.66);
     font-size: 0.9rem;
     font-weight: 500;
     opacity: 0;
     border: solid .5px light;
-    border-radius:35px 35px 35px 35px
-    transition: all 0.3s ease;
-}
+    border-radius: 35px 35px 35px 35px transition all 0.3s ease;
+  }
 
-.portfolio-card:hover .view-project-btn {
+  .portfolio-card:hover .view-project-btn {
     opacity: 1;
     transform: translateX(5px);
-}
+  }
 
-.bi-arrow-right-circle {
+  .bi-arrow-right-circle {
     transition: transform 0.3s ease;
-}
+  }
 
-.portfolio-card:hover .bi-arrow-right-circle {
+  .portfolio-card:hover .bi-arrow-right-circle {
     transform: translateX(3px);
-}
+  }
 
-.empty-state {
+  .empty-state {
     min-height: 60vh;
     display: flex;
     flex-direction: column;
@@ -329,46 +352,49 @@ transform: scale(1.05);
     align-items: center;
     background: rgba(255, 255, 255, 0.83);
     border-radius: 16px;
-}
+  }
 
-.tracking-wide {
+  .tracking-wide {
     letter-spacing: 2px;
-}
-
+  }
 </style>
 
 
 
-  <body>
-    <!-- Navigation -->
-    <nav class="navbar sticky-top navbar-expand-md navbar-default bg-white mb-0 ">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'index' %}">
-          <img src="{% static 'assets/images/logo.png' %}" alt="Logo" width="100" height="100" class="d-inline-flex align-top" />
-          
-        </a>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar sticky-top navbar-expand-md navbar-default bg-white mb-0 ">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{% static 'assets/images/logo.png' %}" alt="Logo" width="100" height="100"
+          class="d-inline-flex align-top" />
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+      </a>
 
-        <div class="collapse navbar-collapse" id="mainNav">
-          <ul class="navbar-nav ms-auto mb-auto mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'portfolio' %}active{% endif %}" href="{% url 'portfolio' %}">Portfolio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" href="{% url 'blog' %}">Blog</a>
-            </li>
-           <!-- <li class="nav-item">
+      <button class="btn-default navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto mb-auto mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}"
+              href="{% url 'index' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'portfolio' %}active{% endif %}"
+              href="{% url 'portfolio' %}">Portfolio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}"
+              href="{% url 'blog' %}">Blog</a>
+          </li>
+          <!-- <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.url_name == 'shop' %}active{% endif %}" href="{% url 'shop' %}">Store</a>
             </li> -->
-          </ul>
+        </ul>
 
-         <!-- <ul class="navbar-nav ms-auto">
+        <!-- <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -390,50 +416,70 @@ transform: scale(1.05);
               </a>
             </li> {% endcomment %}
           </ul>-->
-        </div>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <!-- Main Content -->
-    <main class="main-container container-fluid mt-auto p-0 justify-content-center">
-		<div class="container-flex mt-0 pt-0">
-        {% block content %}
-        {% endblock %}
-		</div>
-    </main>
+  <!-- Main Content -->
+  <main class="main-container container-fluid mt-auto p-0 justify-content-center">
+    <div class="container-flex mt-0 pt-0">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </main>
 
-    <!-- Footer -->
-    <footer class="footer mt-auto py-auto bg-inherit text-muted border-top- b-0">
-      <div class="container-fluid align-center">            
+  <!-- Footer -->
+  <footer class="footer mt-auto py-auto bg-inherit text-muted border-top- b-0">
+    <div class="container-fluid align-center">
 
-        <div class="row">
-          <div class="col-md-4 text-center text-md-start">
-            <span class="ms-2"></span>
+      <div class="row">
+        <div class="col-md-4 text-center text-md-start">
+          <span class="ms-2"></span>
+        </div>
+        <div class="col-md-4 text-center">
+          <img class="img-fluid" src="{% static 'assets/icons/T-white.png' %}" alt="Logo" width="50" height="50" />
+          <div class="text-center text-muted mt-1">
+            All Rights Reserved™️
+            <br />
+            <small class="text-muted"> &copy;{{ current_year }} </small>
+            <br />
           </div>
-          <div class="col-md-4 text-center">
-            <img class="img-fluid" src="{% static 'assets/icons/T-white.png' %}" alt="Logo" width="50" height="50" />
-            <div class="text-center text-muted mt-1">
-             All Rights Reserved™️
-              <br/> 
-                <small class="text-muted"> &copy;{{ current_year }}  </small> 
-              <br/>
-            </div>
-          </div>
-          <div class="col-md-4 text-center text-md-end">
-            <span class="text-light my-3 my-md-0 ">
-              <div class="social-links">
+        </div>
+        <div class="col-md-4 text-center text-md-end">
+          <span class="text-light my-3 my-md-0 ">
+            <div class="social-links">
               <a href="#" class="text-muted mx-2"><i class="fab fa-facebook"></i></a>
               <a href="#" class="text-muted mx-2"><i class="fab fa-linkedin"></i></a>
               <a href="#" class="text-muted mx-2"><i class="fab fa-twitter"></i></a>
-            </div> 
-            </span>
-          </div>
+            </div>
+          </span>
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
 
-    <!-- Custom JS -->
-    <script src="{% static 'js/main.js' %}"></script>
+  <!-- Custom JS -->
+  <script src="{% static 'js/main.js' %}"></script>
 
-  </body>
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <!-- Swiper Initialization -->
+  <script>
+    const swiper = new Swiper('.swiper-container', {
+      loop: true,
+      spaceBetween: 20,
+      slidesPerView: 1,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  </script>
+</body>
+
 </html>

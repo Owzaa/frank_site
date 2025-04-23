@@ -1,71 +1,66 @@
+# frank_site/APPS/PORTFOLIO/views.py
+
 from django.shortcuts import render, get_object_or_404
-from datetime import date
-from .models import PortfolioCategory, PortfolioItem, Project
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
+from .models import Project, Category
 
 def portfolio(request):
-    projects = PortfolioItem.objects.all()
-    proj_count = projects.count()
-    current_year = date.today().year
-    context = {
-    'proj_count': proj_count,
-    'projects':projects,
-    'current_year':current_year,
-    }
+    # All Projects
+    projects = Project.objects.all()
+    categories = Category.objects.all()
 
-    return render(request, 'portfolio/portfolio.html',context)
+    # Paginate projects (6 per page)
+    paginator = Paginator(projects, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
+    # Handle AJAX (pagination click)
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('portfolio/includes/project_list.html', {'page_obj': page_obj})
+        return JsonResponse({'html': html})
 
-def project_list(request):
-    projects = PortfolioItem.objects.all()
-    proj_count = projects.count()
-    context = {
-        'projects':projects,
-        'proj_count': proj_count,
-    }
-    return render(request, 'portfolio/portfolio.html',context)
+    # Normal full page load
+    return render(request, 'portfolio/portfolio.html', {
+        'page_obj': page_obj,
+        'categories': categories,
+        'current_category': None,
+    })
 
+def portfolio_category(request, category_slug):
+    # Get the category object
+    category = get_object_or_404(Category, slug=category_slug)
 
-def project_detail(request,pk):
-    project = get_object_or_404(Project, pk=pk)
-    current_year = date.today().year
-    context = {
-    'project':project,
-    'current_year':current_year
-    }
-    return render(request,'portfolio/project_detail.html',context)
+    # Filter projects belonging to that category
+    projects = Project.objects.filter(category=category)
 
+    categories = Category.objects.all()
 
-def portfolio_categories(request):
-    categories = PortfolioCategory.objects.filter(
-        items__published=True
-    ).distinct().order_by('order')
+    # Paginate filtered projects (6 per page)
+    paginator = Paginator(projects, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    context = {
-        'categories': categories
-    }
-    return render(request, 'portfolio/category_items.html', context)
+    # Handle AJAX (pagination/filter click)
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        html = render_to_string('portfolio/includes/project_list.html', {'page_obj': page_obj})
+        return JsonResponse({'html': html})
 
-def portfolio_category(request,category_slug):
-    category = get_object_or_404(PortfolioCategory, slug=category_slug)
-    items = category.items.filter(published=True).order_by('-project_date')
+    # Normal full page load
+    return render(request, 'portfolio/portfolio.html', {
+        'page_obj': page_obj,
+        'categories': categories,
+        'current_category': category,
+    })
 
-    context = {
-        'category': category,
-        'items': items
-    }
-    return render(request, 'portfolio/category_items.html', context)
 
 def portfolio_detail(request, category_slug, item_slug):
-    item = get_object_or_404(PortfolioItem,
-                            slug=item_slug,
-                            category__slug=category_slug,
-                            published=True)
+    category = get_object_or_404(Category, slug=category_slug)
+    project = get_object_or_404(Project, slug=item_slug, category=category)
 
-    context = {
-        'item': item,
-        'related_items': PortfolioItem.objects.filter(
-            category=item.category,
-            published=True
-        ).exclude(id=item.id)[:4]
-    }
-    return render(request, 'portfolio/detail.html', context)
+    return render(request, 'portfolio/portfolio_detail.html', {
+        'project': project,
+        'category': category,
+    })

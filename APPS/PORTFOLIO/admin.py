@@ -1,39 +1,26 @@
 from django.contrib import admin
+from .models import Category, Project, ProjectImage
 
-from . models import PortfolioCategory, PortfolioItem, Project,   ProjectImage
-
-class PortfolioItemInline(admin.TabularInline):
-    model = PortfolioItem
-    extra = 1
-
-@admin.register(PortfolioCategory)
-class PortfolioCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order', 'item_count')
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'order')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [PortfolioItemInline]
-
-    def item_count(self, obj):
-        return obj.items.count()
-    item_count.short_description = "Items"
-
-@admin.register(PortfolioItem)
-class PortfolioItemAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'client', 'project_date', 'featured', 'published')
-    list_filter = ('category', 'featured', 'published')
-    search_fields = ('title', 'description', 'content')
-    prepopulated_fields = {'slug': ('title',)}
-    date_hierarchy = 'project_date'
-
+    ordering = ('order',)
 
 class ProjectImageInline(admin.TabularInline):
-    model= ProjectImage
+    model = ProjectImage
     extra = 1
 
-
 @admin.register(Project)
-
 class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'project_start', 'project_finished', 'published', 'featured')
+    list_filter = ('published', 'featured', 'category')
+    search_fields = ('title', 'client', 'technology')
+    prepopulated_fields = {'slug': ('title',)}
     inlines = [ProjectImageInline]
+    readonly_fields = ('created_at', 'updated_at')
 
-admin.site.register(ProjectImage)
-
+@admin.register(ProjectImage)
+class ProjectImageAdmin(admin.ModelAdmin):
+    list_display = ('project', 'title')
+    search_fields = ('project__title',)

@@ -1,0 +1,78 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ project.title }} | Portfolio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a href="{% url 'portfolio_categories' category_slug=category.slug %}" class="btn btn-outline-primary">
+            ← Back to {{ category.name }}
+        </a>
+    </div>
+
+    <div class="row align-items-center">
+        <!-- Project Image -->
+        <div class="col-md-6 mb-4 mb-md-0">
+            <img src="{{ project.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ project.title }}">
+        </div>
+
+        <!-- Project Details -->
+        <div class="col-md-6">
+            <h1 class="fw-bold mb-3">{{ project.title }}</h1>
+            <p class="text-muted mb-4">
+                <strong>Category:</strong> {{ category.name }}
+            </p>
+            <div class="mb-4">
+                {{ project.description|safe }}
+            </div>
+
+            {% if project.project_url %}
+            <a href="{{ project.project_url }}" target="_blank" class="btn btn-primary">
+                Visit Project ↗
+            </a>
+            {% endif %}
+        </div>
+
+        {% if project.images.all %}
+        <h3 class="mt-5 mb-4">Project Gallery</h3>
+
+        <!-- Swiper -->
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {% for image in project.images.all %}
+                <div class="swiper-slide">
+                    <img src="{{ image.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ image.title }}">
+                    {% if image.caption %}
+                    <div class="text-center mt-2 small text-muted">{{ image.caption }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+
+            <!-- Navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- AOS Animation (optional) -->
+<script src="{% static 'js/aos.js' %}"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        easing: 'slide',
+        once: true
+    });
+</script>
+
+{% endblock %}
