@@ -15,6 +15,7 @@ a
   justify-content:center;
   align-items:center;
   margin:0;
+  background-color: #aa4c2a8c;
 
   max-height:auto;
 }
@@ -89,7 +90,7 @@ a
   justify-content:center;
   justify-items:center;
   background-color:none;
-  color:#ffe1d1;
+  color:#ffffff;
   border:solid .5px #ccc;
   border-radius: 100px;
 }
@@ -198,5 +199,5 @@ footer,
   align-items:center;
   justify-content:center;
   justify-items:center;
-  color:#ccc;
+  color:#ffffff;
 }

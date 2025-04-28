@@ -4,6 +4,25 @@ from django.utils.text import slugify
 # -----------------------------
 # Category for Portfolio
 # -----------------------------
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = "Tags"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -57,7 +76,7 @@ class Project(models.Model):
 class ProjectImage(models.Model):
     project = models.ForeignKey(Project, related_name='images', on_delete=models.CASCADE)
     title = models.CharField(max_length=100, blank=True)
-    image = models.ImageField(upload_to='portfolio/projects/gallery/')
+    image = models.ImageField(upload_to='portfolio/projects')
     caption = models.TextField(blank=True)
 
     def __str__(self):

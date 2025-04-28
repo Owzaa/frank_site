@@ -5,110 +5,107 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<div class="container-flex w-100 h- justify-content-center">
+<div class="container-flex w-100 h-100 justify-content-center align-items-center">
 	<!-- HERO_SECTION -->
 	<section class="hero-section align-items-center">    
 	
 		<!-- Hero_Overlayer-->
-		<div class="container hero-overlay">
-			<div class="container-flex position-absolute">
-				<div class="row mt-auto p- align-items-center">
+		<div class="hero-overlay">
+			<div class="container-flex position-absolute  justify-content-center">
+				<div class="row mt-2 align-items-center">
+		 
+				<h1 class="flex p-4 section-title display-6 text-center fw-lighter">
+					COLLABORATE | CREATE | ELAVATE			 
+				</h1>
+				</div>			
+				<!-- Text Content Column -->
 					<!-- Image Column -->
-					<div class="col-12 d-flex justify-content-start">
-						<div class="avatar-container mt-auto">
-							<img
-							src="{% static 'assets/icons/ThembaIcon.png' %}"
-							alt="Themba's professional avatar"
-							class="img-fluid d-flex"
-							>
-						</div>
-					</div>
-				</div>
+					
 			</div>
-			<!-- Text Content Column -->
+
 		</div>
 		<!--End-->	
 	</section>
-	<!--END_SECTION-->
+<!--END_SECTION-->
+
+<!--- PROFILE_DETAILS_SECTION-->
+	<section class="profile-section justify-content-center">
+		<div class="container-flex position-absolute  justify-content-center">
+			<div class="row col-12 text-center">
+				<div class="text-center avatar-container mt-auto text-center">
+					<img						
+					src="{% static 'assets/icons/ThembaIcon2.png' %}"
+					alt="Themba's professional avatar"
+					width=100
+					height=75
+					class="img-fluid d-flex"
+					>
+				</div>
+				<span class="profile-text container">
+					<p class="about-text-details text-center text-small">
+
+					</p>
+				</span>
+
+			</div>	
+		</div>
+	</section>
+<!--END_SECTION-->
+
 
 <!-- SEASON_SCOOP_SECTION -->
-<section class="container-flex justify-center season_scoop-section mt-0 pt-0 mb-5 bg-white">
-    <div class="container ">
-        <!-- Section Header -->
-        <div class="container p-5">
-            <div class="col-12 text-center">
-                 <h1 class="display-5 fw-bold text-uppercase section-title position-relative">
-                    Season Scoop
-                    <span class="title-decoration position-absolute bottom-5 start-5 translate-middle-x bg-primary"></span>
-                </h1>
-            </div>
-        </div>
-
-    <!-- Cards Container -->
-<div class="flex row d-block-inline gap-2 p-0 align-items-center">
-    {% for post in posts %}
-    <div class="container row col-12 col-md-6 col-lg-4 p-3">  <!-- Responsive column sizing -->
-        <div class="card border-0 shadow  hover-lift">
-            {% if post.featured_image %}
-            <div class="card-header border-0 bg-transparent">
-                <div class="d-flex align-items-center gap-5">
-                    <img src="{{ post.featured_image.url }}" 
-                         class="img-fluid d-block w-100 h-100" 
-                         alt="{{ post.title }}"
-                         style="width:100%; height:100%; 
-						 object-fit-content: center/cover;">
-                    
-				
-                </div>
-            </div>
-            {% endif %}
-				<span class="d-flex justify-content-between gap-2">
-                    <small class="section-title text-decoration-underline m-auto justify-content-center mr-0 ms-1 pt-0"> 
-					<i class="fas fa-user 1xl"></i> <b>{{post.author }}</b></small>
-					<small class="section-title text-decoration-underline mt-0 mr-4 p-0">
-					<b>Published:</b> {{ post.published_at|date:"M d, Y" }}</small>
-                </span>
-            <div class="card-body mt-0 pt-0">
-                <h2 class="section-title h3 fw-bold mt-0 mb-auto">{{ post.title }}</h2>
-                <p class="section-title mb-0">
-                    {{ post.content|truncatechars:18 }}
-                </p>
-            </div>
-
-            <div class="card-footer bg-light border-0 d-flex justify-content-between align-items-center">
-                <div class="d-flex gap-3">
-                    <small class="section-title">
-                        <i class="fas fa-eye me-1"></i>{{ post.views_count }} views
-                    </small>
-                    <small class="section-title">
-						<i class="fas fa-comment me-1"></i>{{ post.comments_count }} comment
-                    </small>
-                </div>
-                
-                <div class="d-flex align-items-center gap-2">
-                    {% if post.categories %}
-                    <span class="badge bg-secondary">{{ post.name }}</span>
-                    {% endif %}
-                    <small class="text-default">
-                     {{ post.likes_count }}<i class="fas fa-heart bg-default"></i>
-                    </small>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% empty %}
-    <div class="col-12">
-        <div class="alert alert-info text-center py-5">
-            <i class="fas fa-info-circle fa-3x mb-3 text-info"></i>
-            <p class="h5 mb-0">Currently no articles available</p>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-        
-    </div>
-</section>
-
+<!-- SEASON_SCOOP_SECTION -->
+<section class="container-flex justify-center season_scoop-section mt-0 pt-0 mb-0 bg-white">
+	<div class="container d-inline-flex">
+	  <!-- Section Header -->
+	  <div class="container p-5">
+		<div class="col-12 text-center">
+		  <h1 class="display-5 fw-bold text-uppercase section-title position-relative">
+			Season Scoop
+			<span class="title-decoration position-absolute bottom-5 start-5 translate-middle-x bg-primary"></span>
+		  </h1>
+		</div>
+	  </div>
+  
+	  <!-- Swiper -->
+	  <div class="swiper mySwiper">
+		<div class="swiper-wrapper fluid">
+		  {% for post in posts %}
+		  <div class="swiper-slide">
+			<div class="card blog-card shadow border-0 rounded-1">
+			  {% if post.featured_image %}
+			  <img src="{{ post.featured_image.url }}" 
+				   class="img-fluid w-100 h-100" 
+				   alt="{{ post.title }}"
+				   style="max-height:275px; object-fit: cover;">
+			  {% endif %}
+			  <div class="card-body text-center">
+				<h5 class="card-title fw-bold">{{ post.title }}</h5>
+				<p class="card-text">{{ post.content|truncatechars:70 }}</p>
+			  </div>
+			  <div class="card-footer d-flex justify-content-between small">
+				<span><i class="fas fa-eye"></i> {{ post.views_count }} views</span>
+				<span><i class="fas fa-comment"></i> {{ post.comments_count }} comments</span>
+			  </div>
+			</div>
+		  </div>
+		  {% empty %}
+		  <div class="col-12">
+			<div class="alert alert-info text-center py-5">
+			  <i class="fas fa-info-circle fa-3x mb-3 text-info"></i>
+			  <p class="h5 mb-0">Currently no articles available</p>
+			</div>
+		  </div>
+		  {% endfor %}
+		</div>
+  
+		<!-- Arrows -->
+		<div class="swiper-button-next hidden"></div>
+		<div class="swiper-button-prev hidden"></div>
+	  </div>
+	</div>
+  </section>
+  
 	<!--INTERESTS_SECTION-->
 	<section class="container-flex interests-section" aria-label="Interest Areas" style="background:rgba(253, 156, 121, 0.14);padding:35px 35px">
 		<div class="container">
@@ -245,6 +242,80 @@
 <!--CSS CUSTOM STYLE-->
 {% block extra_css %}
 <style>
+
+/* Main card */
+.blog-card {
+  background: rgba(255, 255, 255, 0.897); /* soft glass effect */
+  backdrop-filter: blur(8px);
+  border-radius: 30px;
+  overflow: hidden;
+  padding: 15px 15px;
+  transition: all 0.5s ease;
+  box-shadow: 0 5px 5px rgba(170, 77, 42, 0.1);
+}
+
+/* Active (center) blog card pops */
+.swiper-slide-active .blog-card {
+  transform: scale(1.5);
+  box-shadow: 0 12px 40px rgba(170, 77, 42, 0.2);
+  background: #fff; /* pure white when focused */
+}
+
+/* Default swiper slide */
+.swiper-slide {
+  width: 320px;
+  opacity: 0.7;
+  transition: opacity 0.5s, transform 0.5s;
+}
+.swiper-slide-active {
+  opacity: 1;
+}
+
+/* Blog text fade animation */
+.blog-card h2, 
+.blog-card p {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+/* When card is active, reveal text */
+.swiper-slide-active .blog-card h2,
+.swiper-slide-active .blog-card p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Arrows styling */
+.swiper-button-next, 
+.swiper-button-prev {
+  color: #AA4D2A;
+}
+
+.section-title {
+    color: #AA4D2A;
+    letter-spacing: 1.5px;
+}
+.title-decoration {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #AA4D2A;
+    border-radius: 2px;
+}
+.hover-lift {
+    transition: all 0.5s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(170, 77, 42, 0.1);
+}
+
 .section-title {
     color: #AA4D2A;
     letter-spacing: 1.5px;
@@ -297,7 +368,7 @@ color: #AA4D2A !important;
 }
 .interest-item{
 width:100%;
-height:50px;
+height:50%;
 transition: transform 0.3s ease;
 }
 .interest-item:hover {
@@ -312,4 +383,3 @@ filter: grayscale(0%);
 }
 </style>
 {% endblock %}
-

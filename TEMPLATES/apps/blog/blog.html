@@ -48,7 +48,7 @@
 
         <!-- Main Content -->
         <div class="col-lg-9 col-md">
-            <div class="row">
+            <div class="row blog-card>
                 {% for post in posts %}
                 <div class="col row-col-lg-4 col-md-6 mb-4">
                     <div class="card border-0 shadow hover-lift">
@@ -56,9 +56,9 @@
                             {% if post.featured_image %}                            
                             <img src="{{ post.featured_image.url }}" 
                                  class="card-img-top mb-3" alt="{{ post.title }}" 
-                                 style="height:100%; object-fit-content: cover;">
+                                 style="height:100%; content: cover;">
                             {% endif %}
-                            <h2 class="section-title fw-bold mb-3">
+                            <h2 class="section-title fw-lighter mb-auto">
                                 <a href="{% url 'post_detail' post.slug %}" class="text-decoration-none text-dark">
                                     {{ post.title }}
                                 </a>

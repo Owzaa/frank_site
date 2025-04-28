@@ -1,9 +1,61 @@
+{% extends 'main/base.html' %}
+
 {% load static %}
 {% load django_bootstrap5 %}
 {% load i18n %}
 
 {% block content %}
-
+<style>
+    .project-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    
+    .project-image-container {
+        height: 220px;
+    }
+    
+    .project-image-container img {
+        height: 100%;
+        object-fit: cover;
+        width: 100%;
+    }
+    
+    .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.6);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .project-card:hover .project-overlay {
+        opacity: 1;
+    }
+    
+    .transition-300 {
+        transition: all 0.3s ease;
+    }
+    
+    .hover-shadow:hover {
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    }
+    
+    .empty-state {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 3rem 1rem;
+    }
+    </style>
 
 {% if projects %}
 <div class="row g-4">
@@ -11,15 +63,15 @@
     <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
         <div class="card project-card h-100 border-0 shadow-sm hover-shadow transition-300">
             <div class="position-relative overflow-hidden project-image-container">
-                <img src="{{ project.image }}" class="card-img-top" alt="{{ project.title }}" loading="lazy">
+                <img w-100 src="{{% static 'project.image.url' %}}" class="card-img-top" alt="{{ project.title }}" loading="lazy">
                 <div class="project-overlay d-flex align-items-center justify-content-center">
-                    <a href="{% url 'portfolio'  %}" class="btn btn-primary rounded-pill px-4">View Project</a>
+                    <a href="{% url 'portfolio' %}" class="btn btn-primary rounded-pill px-4">View Project</a>
                 </div>
             </div>
             <div class="card-body p-4">
                 <h5 class="card-title fw-bold mb-3">{{ project.title }}</h5>
                 <p class="card-text text-muted mb-3">{{ project.excerpt }}</p>
-
+                <a href="{% url 'portfolio' %}" class="btn btn-outline-primary rounded-pill px-4">View Project</a>
             </div>
         </div>
     </div>
@@ -81,57 +133,4 @@
 </div>
 {% endif %}
 
-{% endblock content %}
-{% block scripts %}
-<style>
-.project-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-}
-
-.project-image-container {
-    height: 220px;
-}
-
-.project-image-container img {
-    height: 100%;
-    object-fit: cover;
-    width: 100%;
-}
-
-.project-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.6);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.project-card:hover .project-overlay {
-    opacity: 1;
-}
-
-.transition-300 {
-    transition: all 0.3s ease;
-}
-
-.hover-shadow:hover {
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
-}
-
-.empty-state {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 3rem 1rem;
-}
-</style>
 {% endblock %}

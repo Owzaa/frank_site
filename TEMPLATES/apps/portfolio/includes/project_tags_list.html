@@ -1,0 +1,10 @@
+<div class="project-tags mb-4">
+    <a href="{% url 'portfolio:project_list' %}" class="btn btn-sm {% if not active_tag %}btn-primary{% else %}btn-outline-primary{% endif %} me-2 mb-2">
+        All Projects
+    </a>
+    {% for tag in tags %}
+    <a href="{% url 'portfolio:project_list_by_tag' tag.slug %}" class="btn btn-sm {% if active_tag == tag.slug %}btn-primary{% else %}btn-outline-primary{% endif %} me-2 mb-2">
+        {{ tag.name }}
+    </a>
+    {% endfor %}
+</div>

@@ -1,8 +1,11 @@
-from django.urls import path
+from django.urls import path # from django.views.generic import ListView
 from . import views
 
+
 urlpatterns = [
-    path('', views.portfolio, name='portfolio'),
-    path('category/<slug:category_slug>/', views.portfolio_category, name='portfolio_categories'),
-    path('category/<slug:category_slug>/<slug:item_slug>/', views.portfolio_detail, name='portfolio_detail'),
+    path('portfolio/', views.PortfolioView.as_view(), name='portfolio'),
+    path('projects/', views.ProjectListView.as_view(), name='projects'),
+    path('', views.ProjectListView.as_view(), name='project_list'),
+    path('tag/<slug:tag_slug>/', views.ProjectListView.as_view(), name='project_list_by_tag'),
+    path('<slug:slug>/', views.ProjectDetailView.as_view(), name='project_detail'),
 ]

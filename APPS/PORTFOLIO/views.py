@@ -1,66 +1,48 @@
 # frank_site/APPS/PORTFOLIO/views.py
 
-from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator
-from django.http import JsonResponse
-from django.template.loader import render_to_string
 
-from .models import Project, Category
-
-def portfolio(request):
-    # All Projects
-    projects = Project.objects.all()
-    categories = Category.objects.all()
-
-    # Paginate projects (6 per page)
-    paginator = Paginator(projects, 6)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    # Handle AJAX (pagination click)
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        html = render_to_string('portfolio/includes/project_list.html', {'page_obj': page_obj})
-        return JsonResponse({'html': html})
-
-    # Normal full page load
-    return render(request, 'portfolio/portfolio.html', {
-        'page_obj': page_obj,
-        'categories': categories,
-        'current_category': None,
-    })
-
-def portfolio_category(request, category_slug):
-    # Get the category object
-    category = get_object_or_404(Category, slug=category_slug)
-
-    # Filter projects belonging to that category
-    projects = Project.objects.filter(category=category)
-
-    categories = Category.objects.all()
-
-    # Paginate filtered projects (6 per page)
-    paginator = Paginator(projects, 6)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    # Handle AJAX (pagination/filter click)
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        html = render_to_string('portfolio/includes/project_list.html', {'page_obj': page_obj})
-        return JsonResponse({'html': html})
-
-    # Normal full page load
-    return render(request, 'portfolio/portfolio.html', {
-        'page_obj': page_obj,
-        'categories': categories,
-        'current_category': category,
-    })
+from django.views.generic import ListView, DetailView
+from .models import Project, Tag
+from django.shortcuts import get_object_or_404
 
 
-def portfolio_detail(request, category_slug, item_slug):
-    category = get_object_or_404(Category, slug=category_slug)
-    project = get_object_or_404(Project, slug=item_slug, category=category)
+class PortfolioView(ListView):
+    model = Project
+    template_name = 'portfolio/portfolio.html'
+    context_object_name = 'projects'
+    paginate_by = 9
+    
+    def get_queryset(self):
+        queryset = Project.objects.filter(published=True)
+        return queryset
 
-    return render(request, 'portfolio/portfolio_detail.html', {
-        'project': project,
-        'category': category,
-    })
+
+class ProjectListView(ListView):
+    model = Project
+    template_name = 'portfolio/includes/project_list.html'
+    context_object_name = 'projects'
+    paginate_by = 9
+    
+    def get_queryset(self):
+        queryset = Project.objects.filter(published=True)
+        tag_slug = self.kwargs.get('tag_slug')
+        if tag_slug:
+            tag = get_object_or_404(Tag, slug=tag_slug)
+            queryset = queryset.filter(tags=tag)
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tag'] = self.kwargs.get('tag_slug')
+        return context
+
+class ProjectDetailView(DetailView):
+    model = Project
+    template_name = 'portfolio/project_detail.html'
+    context_object_name = 'project'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        project = self.object
+        context['related_projects'] = Project.objects.filter(tags__in=project.tags.all()).exclude(id=project.id)
+        return context
+        

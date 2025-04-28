@@ -1,244 +1,102 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-{% block title %}My Portfolio{% endblock %}
+{% block title %}Portfolio{% endblock %}
 
 {% block content %}
 <style>
     :root {
-        /* Primary Color Scheme */
-        --primary: #aa4c2aa1;
-        --primary-hover: #fafafa;
-        --primary-light: #AA4D2A;
-        --primary-soft: #d34f1f;
-
-        /* Supporting Colors */
-        --secondary: #eb613e;
-        --accent: #10b981;
-        --dark: #AA4D1A;
-        --light: #f8fafc;
-        --text: #e9e7e6;
-        --border: #ffffffef;
+        --primary: #AA4D2A;
+        --primary-soft: #d87e62;
+        --text: #2D2D2D;
+        --white: #FFFFFF;
+        --bg: #FFF8F6;
+        --border: #eee5e3;
     }
 
-  /* Add these styles to your existing CSS */
-  .portfolio-header {
-        position: relative;
-        overflow: hidden;
-        height:50%;
+    /* Portfolio Header */
+    .portfolio-header {
+        text-align: center;
+        padding: 8rem 5% 4rem;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
     }
 
-    .portfolio-header h1 {
+    .portfolio-title {
+        font-size: 3.5rem;
+        color: var(--text);
+        margin-bottom: 1rem;
         position: relative;
-        color: var(--primary);
-        overflow: hidden;
-        white-space: nowrap;
+        line-height: 1.2;
+    }
+
+    .portfolio-subtitle {
+        color: var(--primary-soft);
+        font-size: 1.25rem;
+        max-width: 600px;
         margin: 0 auto;
-        letter-spacing: .13em;
-        animation: 
-            typing 3.5s steps(50, end),
-            blink-caret .75s infinite,
-            text-glitch 2s infinite 4s;
     }
 
-    .portfolio-header::before,
-    .portfolio-header::after {
-        content: '';
-        position: absolute;
-        width: 150px;
-        height: 150px;
-        background: rgba(99, 102, 241, 0.1);
-        filter: blur(60px);
-        animation: float 12s infinite;
+    /* Category Filters */
+    .filter-section {
+        background: var(--white);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(170, 77, 42, 0.08);
     }
 
-    .portfolio-header::before {
-        top: 50%;
-        left: 10%;
-        background: var(--primary-soft);
+    .filter-group {
+        display: grid;
+        gap: 0.75rem;
     }
 
-    .portfolio-header::after {
-        top: 60%;
-        right: 10%;
-        background: var(--secondary);
-        animation-delay: -4s;
-    }
-
-    .lead {
-        opacity: 0;
-        animation: 
-            fadeInUp 1s ease-out forwards,
-            subtitle-glitch 1s infinite 4.5s;
-        animation-delay: 3.5s;
-    }
-
-    @keyframes typing {
-        from { width: 0 }
-        to { width: 100% }
-    }
-
-    @keyframes blink-caret {
-        from, to { border-right-color: transparent }
-        100% { border-right-color: var(--primary); }
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes float {
-        0%, 100% {
-            transform: translate(0, 0) rotate(0deg);
-        }
-        25% {
-            transform: translate(50px, -50px) rotate(15deg);
-        }
-        50% {
-            transform: translate(-30px, 30px) rotate(-15deg);
-        }
-        75% {
-            transform: translate(-50px, 50px) rotate(10deg);
-        }
-    }
-
-    @keyframes text-glitch {
-        0% {
-            text-shadow: none;
-        }
-        93% {
-            text-shadow: none;
-        }
-        94% {
-            text-shadow: 2px 0 var(--secondary), -2px 0 var(--accent);
-        }
-        95% {
-            text-shadow: -3px 0 var(--secondary), 3px 0 var(--accent);
-        }
-        96% {
-            text-shadow: 4px 0 var(--secondary), -4px 0 var(--accent);
-        }
-        97% {
-            text-shadow: -5px 0 var(--secondary), 5px 0 var(--accent);
-        }
-        98% {
-            text-shadow: none;
-        }
-    }
-
-    @keyframes subtitle-glitch {
-        0%, 100% {
-            transform: translateX(0);
-        }
-        95% {
-            transform: translateX(2px);
-        }
-        96% {
-            transform: translateX(-3px);
-        }
-        97% {
-            transform: translateX(4px);
-        }
-        98% {
-            transform: translateX(-2px);
-        }
-    }
-
-    /* Animated gradient mesh background */
-    .portfolio-header::backdrop {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 500px;
-        background: 
-            linear-gradient(45deg, var(--primary-soft) 10%, 
-            rgba(255,255,255,0.8) 50%, 
-            var(--secondary-soft) 100%);
-        opacity: 0.1;
-        z-index: -1;
-        animation: gradient-move 20s infinite alternate;
-    }
-
-    @keyframes gradient-move {
-        0% {
-            background-position: 0% 0%;
-        }
-        100% {
-            background-position: 100% 100%;
-        }
-    }
-
-
-
-
-
-
-    /* Updated Category Filter Styles */
-    .category-card {
-        background: var(--light);
-        border-color: var(--primary-soft);
-    }
-
-    .list-group-item {
+     /* Add these styles to your existing CSS */
+     .filter-btn {
+        text-decoration: none !important;
+        cursor: pointer;
         display: flex;
-        color: var(--dark);
-        position: relative;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border: none;
+        border-radius: 12px;
+        background: var(--bg);
+        color: var(--text);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .list-group-item:not(.active):hover {
-        color: var(--primary);
-        background: rgba(255, 255, 255, 0.9);
-        padding-left: 5rem;
-        transform: translateX(1px);
+    .filter-btn:hover {
+        text-decoration: none !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(170, 77, 42, 0.1);
     }
 
-    .list-group-item.active {
+    .filter-btn.active {
         background: var(--primary);
-        color: white !important;
-        border-radius: 8px;
-        border:none;
-        box-shadow: 0 4px 6px -1px rgba(214, 155, 79, 0.788);
+        color: var(--white);
+        box-shadow: 0 4px 12px rgba(170, 77, 42, 0.2);
     }
 
-    .list-group-item.active::before {
-        content: list;
-        position: absolute;
-        left: -8px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 60%;
-        background: var(--primary-hover);
-        border-radius: 2px;
+    /* Remove outline on focus for better visual */
+    .filter-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(170, 77, 42, 0.3);
     }
 
-    .category-title {
-        color: var(--primary);
-        letter-spacing: -0.03em;
-        border-bottom: 2px solid var(--primary-soft);
-        padding-bottom: 0.5rem;
+    .badge-count {
+        background: rgba(255,255,255,0.15);
+        color: inherit;
+        padding: 0.35rem 0.9rem;
+        border-radius: 20px;
+        font-size: 0.9em;
     }
 
-    @keyframes lineExpand {
-        0% {
-            width: 0;
-            opacity: 0;
-        }
-
-        100% {
-            width: 120px;
-            opacity: 1;
-        }
+    /* Project Grid */
+    .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 2rem 0;
     }
 
     .project-card {
@@ -246,167 +104,160 @@
         border-radius: 16px;
         overflow: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        background: white;
+        background: var(--white);
     }
 
     .project-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
+        box-shadow: 0 12px 24px rgba(170, 77, 42, 0.08);
     }
 
+    .project-image {
+        height: 240px;
+        object-fit: cover;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .project-content {
+        padding: 1.5rem;
+    }
+
+    .project-title {
+        color: var(--text);
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+    }
+
+    .project-category {
+        color: var(--primary);
+        font-size: 0.9em;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    /* Loading State */
     .loading-overlay {
         min-height: 400px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(243, 243, 243, 0.95);
-        border-radius: 16px;
+        background: rgba(255,255,255,0.9);
     }
 
-    .spinner-large {
-        width: 4rem;
-        height: 4rem;
-        border-width: 0.2em;
-        color:#AA4D2A;
-    }
-
-    /* Pagination Styling */
-    .pagination .page-item.active .page-link {
-        background: var(--primary);
-        border-color: var(--primary);
-    }
-
-    .pagination .page-link {
-        color: var(--primary);
-    }
-
-    .pagination .page-link:hover {
-        color: var(--primary-hover);
-    }
-
-    /* Error State */
-    .alert-danger {
-        background: #ffffff;
-        border-color: #faf4f444;
-        color: #AA4D2A;
-    }
-
-    /* Text Colors */
-    .text-muted {
-        color: #c28867 !important;
+    @media (max-width: 768px) {
+        .portfolio-title {
+            font-size: 2.25rem;
+        }
+        
+        .filter-section {
+            padding: 1.5rem;
+        }
+        
+        .project-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
-<div class="portfolio-header p-1">
-    <div class="container-flex p-5 ">
-        <div class="row">
-            <div class="col-12 text-center">
-            
-                
-                <h1 class="display-3 fw-bold">PORTFOLIO</h1>
-                <p class="lead text-muted mt-3">Showcasing innovation through design and development</p>
-            </div>
+<div class="portfolio-header">
+    <div class="container">
+        <h1 class="portfolio-title">Portfolio</h1>
+        <p class="portfolio-subtitle">Innovative solutions blending aesthetics with functionality</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Category Filters -->
+ <!-- Modified category filter section -->
+ <div class="col-lg-3">
+    <div class="filter-section">
+        <h5 class="mb-3">Filter Projects</h5>
+        <div class="filter-group">
+            <a href="{% url 'projects' %}"
+               class="filter-btn {% if not selected_category %}active{% endif %}">
+                All Work
+                <span class="badge-count">{{ total_projects }}</span>
+            </a>
+            {% for category in categories %}
+            <a href="{% url 'portfolio_categories' category.slug %}"
+               class="filter-btn {% if category.slug == selected_category.slug %}active{% endif %}">
+                {{ category.name }}
+                <span class="badge-count">{{ category.project_count }}</span>
+            </a>
+            {% empty %}
+            <div class="text-muted small">No categories available</div>
+            {% endfor %}
         </div>
     </div>
 </div>
 
-<div class="container">
-        <!-- Sidebar Categories -->
-    <div class="row container-flex">
-        <!-- Update the category card HTML -->
-        <div class="col row-cols-lg col-md">
-            <h5 class="fw-light p-3 category-title">Filter Work</h5>
-            <div class="list-group">
-                <a href="{% url 'portfolio' %}"
-                    class="list-group-item list-group-item-action {% if not selected_category %}active{% endif %}">
-                    All Projects
-                    <span class="badge bg-primary-soft text-primary float-end">
-                        {{ total_projects }}
-                    </span>
-                </a>
-                {% for category in categories %}
-                <a href="{% url 'portfolio_categories' category_slug=category.slug %}"
-                    class="list-group-item list-group-item-action {% if category.slug == selected_category.slug %}active{% endif %}">
-                    {{ category.name }}
-                    <span class="badge bg-primary-dark text-primary float-end">
-                    {{ category.project_count }}
-                    </span>
-                </a>
-                {% empty %}
-                <div class="text-muted small p-3">No categories available</div>
-                {% endfor %}
-            </div>
-        </div>
 
 
-        <!-- Projects Grid -->
-        <div class="col row-cols-lg-9 col-md">
-            <div id="project-list row" class="row g-4">
+        <!-- Project Grid -->
+        <div class="col-lg-9">
+            <div id="project-list" class="project-grid">
                 {% include 'portfolio/includes/project_list.html' %}
             </div>
         </div>
     </div>
 </div>
+
 <script>
-    // Enhanced AJAX handling
+    // Enhanced AJAX Loading
     function loadProjects(url) {
         const projectList = document.getElementById('project-list');
+        projectList.style.minHeight = '400px';
         projectList.innerHTML = `
             <div class="loading-overlay">
                 <div class="text-center">
-                    <div class="spinner-border spinner-large text-primary" role="status" style="color: var(--primary) !important"></div>
-                    <div class="mt-3 fs-5 fw-medium" style="color: var(--primary)">Curating Projects...</div>
+                    <div class="spinner-border" style="width: 3rem; height: 3rem; color: var(--primary);" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3" style="color: var(--primary);">Curating Projects...</p>
                 </div>
             </div>
         `;
 
-        fetch(url, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        })
-            .then(response => {
-                if (!response.ok) throw new Error(response.status);
-                return response.json();
-            })
+        fetch(url)
+            .then(response => response.json())
             .then(data => {
                 projectList.innerHTML = data.html;
                 history.replaceState(null, '', url);
-                AOS.refresh();
+                // Re-initialize any interactive elements
+                initHoverEffects();
             })
             .catch(error => {
                 projectList.innerHTML = `
-                <div class="alert alert-danger" role="alert">
-                    Error loading projects. Please try again later.
-                </div>
-            `;
+                    <div class="alert alert-danger" role="alert" style="color: var(--primary);">
+                        Error loading projects. Please refresh the page.
+                    </div>
+                `;
             });
     }
 
-    // Smooth scroll to top on navigation
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.list-group-item').forEach(link => {
-            link.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+    // Hover effect initialization
+    function initHoverEffects() {
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.transform = `
+                    translateY(-5px)
+                    rotateX(${(y - rect.height/2)/15}deg)
+                    rotateY(${-(x - rect.width/2)/15}deg)
+                `;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
             });
         });
-    });
+    }
 
-    // Contrast Check (requires chroma.js)
-    document.addEventListener('DOMContentLoaded', function () {
-        if (typeof chroma !== 'undefined') {
-            const primary = getComputedStyle(document.documentElement)
-                .getPropertyValue('--primary').trim();
-            const textColor = getComputedStyle(document.documentElement)
-                .getPropertyValue('--text').trim();
-
-            const contrast = chroma.contrast(primary, textColor);
-            if (contrast < 4.5) {
-                console.warn(`Low contrast ratio: ${contrast.toFixed(1)}:1 between primary and text colors`);
-            }
-        }
-    });
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', initHoverEffects);
 </script>
 
 {% endblock %}
