@@ -1,0 +1,128 @@
+{% extends "shop/base.html" %}
+
+{% load static %}
+
+{% block products_container %}
+<div class="container-fluid p-5">
+
+<!-- Hero Banner -->
+<!-- <div class="fluid position-relative -5  p-5 mt-5">
+
+  <div class="position-absolute mb-5 start-50 justify-content-center translate-middle text-center text-white"
+       style="text-shadow: 2px 2px 6px rgba(0,0,0,0.6);">
+     <h1 class="display-4 fw-bold">ALL PRODUCTS</h1> 
+    <p class="lead d-none d-md-block">Explore All our beautifully crafted & designed products</p>
+  </div>
+</div> -->
+
+<!-- Filters -->
+<form method="get" class="mb-4 d-flex flex-wrap gap-2 align-items-center">
+  <input type="text" name="q" value="{{ request.GET.q }}" class="form-control shadow-sm border-0" placeholder="Search products..." style="max-width: 250px; background-color: #FFF1EA;">
+  
+  <select name="category" class="form-select shadow-sm border-0" style="max-width: 200px; background-color: #FFF1EA;">
+    <option value="">All Categories</option>
+    {% for category in categories %}
+      <option value="{{ category.id }}" {% if request.GET.category|stringformat:"s" == "" or request.GET.category|stringformat:"s" == category.id|stringformat:"s" %}selected{% endif %}>
+        {{ category.name }}
+      </option>
+    {% endfor %}
+  </select>
+
+  <button type="submit" class="btn text-white" style="background-color: #aa4c2abe;">Filter</button>
+</form>
+
+
+<!-- Product Grid -->
+<div class="row">
+  {% for product in products %}
+      <div class="container-fluid grid col-lg-4 col-md-6 col-sm-12 mb-3 ">
+        <div id="card-container" class="card h-100 shadow-lg border-0">
+            <img src="{{ product.image_url.url }}" 
+            class="card-img img-fluid" 
+            alt="{{ product.name }}"
+            style="object-fit: cover; height: 100%;"
+            >          <button class="fw-lighter mt-3 m-0  text-light btn btn-outline border-0 badge  text-center" style="
+            display:flex;
+            position: absolute;
+            border-radius: 10%;
+            padding-top: 15px 15px;
+            width: 50px; height: auto;
+            background-color:#aa5b2a;
+            color: inherit;
+            float: left;
+            align-items: center;
+            justify-content: center;
+            "> best-seller </button>
+
+            <div class="card-body">
+            <h5 class="card-title text-center">{{ product.name }}</h5>
+
+            <div class="card-text text-inherit">
+             <span class="text-inherit fw-bolder">
+              Description: 
+            </span> 
+             <p class="text-inherit text-smaller"> {{ product.description|truncatewords:150 }}</p> 
+          </div>
+          <span class="mb-5 fw-lighter   text-smaller justify-content">
+            <small class="text-inherit text-smaller mb-0 "> Price: R{{ product.price }} </small>  
+            <small class="text-inherit text-smaller"> Colors : {{ product.color }} </small>  
+            <small class="text-inherit text-smaller mb-5"> Sizes: {{ product.size }}</small> 
+          </span>  
+            <a href="{% url 'product_detail' product.pk %}"  class="flex me-2 btn mt-5 p-3 d-block btn-outline text-inherit" style="border:none;border-color:#aa4c2a17;border-radius:15px;color:#aa4c2a8f;background-color: #aa4c2a17;">View</a>
+        <br/>
+            <a href="{% url 'product_detail' product.pk %}"  class="flex me-2 btn p-3 d-block btn-outline text-inherit" style="border:solid 0.5px;border-color:#aa551449;border-radius:15px;color:inherit;background-color: inherit;">Add-to-cart</a>
+
+          </div>
+        </div>
+      </div>
+ 
+  {% if empty %}
+    <div class="col-12">
+      <div class="card text-center p-5 shadow-sm border-0 bg-light">
+        <div class="card-body">
+          <h2 class="display-6 text-danger">🚫 No products found</h2>
+          <p class="lead">Try adjusting your search or filter criteria.</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% endfor %}
+</div>
+
+<!-- Pagination -->
+<div class="mt-4 d-flex justify-content-center">
+    {% if products.has_other_pages %}
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        {% if products.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ products.previous_page_number }}">Previous</a>
+          </li>
+        {% endif %}
+
+        {% for num in products.paginator.page_range %}
+          {% if products.number == num %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ num }}">{{ num }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if products.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.category %}category={{ request.GET.category }}&{% endif %}page={{ products.next_page_number }}">Next</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+</div>
+</div>
+{% endblock %}
+
+
+
+ChatGPT said:

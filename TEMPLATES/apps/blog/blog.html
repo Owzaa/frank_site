@@ -5,12 +5,12 @@
 {% block title %} Blog {% endblock %}
 
 {% block content %}
-<div class="container-flex justify-center">     <!-- Section Header -->
+<div class="container-flex justify-center"> <!-- Section Header -->
     <div class="row m-5 p-0">
         <div class="col-12 text-center">
             <h1 class="display-3 fw-bold p-5 text-uppercase section-title position-relative">
                 SEASON-SCOOP
-            <span class="title-decoration position-absolute bottom-0 start-50 translate-middle-x bg-primary"></span>
+                <span class="title-decoration position-absolute bottom-0 start-50 translate-middle-x bg-primary"></span>
             </h1>
         </div>
     </div>
@@ -18,10 +18,10 @@
         <!-- Search Bar -->
         <div class="col-12 mb-4">
             <form method="GET" class="d-flex m-auto">
-                <input type="text-default" name="q" class="form-control me-auto" placeholder="Search posts..." 
-                       value="{{ request.GET.q }}">
+                <input type="text-default" name="q" class="form-control me-auto" placeholder="Search posts..."
+                    value="{{ request.GET.q }}">
                 <button type="submit" class="btn btn-dark m-3 btn-rounded-circle ">
-				search
+                    search
                 </button>
             </form>
         </div>
@@ -33,8 +33,8 @@
                     <h5 class="section-title  fw-bolder mb-4 border-bottom-light text-uppercase">Categories</h5>
                     <div class="list-group">
                         {% for cat in categories %}
-                        <a href="{% url 'category' cat.slug %}" 
-                           class="section-title list-group-item border-light list-group-item-action d-flex justify-content-between align-items-center">
+                        <a href="{% url 'category' cat.slug %}"
+                            class="section-title list-group-item border-light list-group-item-action d-flex justify-content-between align-items-center">
                             {{ cat.name }}
                             <span class="badge bg-danger rounded-pill justify-center">{{ cat.post_count }}</span>
                         </a>
@@ -48,15 +48,14 @@
 
         <!-- Main Content -->
         <div class="col-lg-9 col-md">
-            <div class="row blog-card>
+            <div class="row blog-card">
                 {% for post in posts %}
                 <div class="col row-col-lg-4 col-md-6 mb-4">
                     <div class="card border-0 shadow hover-lift">
                         <div class="card-header bg-white pb-0">
-                            {% if post.featured_image %}                            
-                            <img src="{{ post.featured_image.url }}" 
-                                 class="card-img-top mb-3" alt="{{ post.title }}" 
-                                 style="height:100%; content: cover;">
+                            {% if post.featured_image %}
+                            <img src="{{ post.featured_image.url }}" class="card-img-top mb-3" alt="{{ post.title }}"
+                                style="height:100%; content: cover;">
                             {% endif %}
                             <h2 class="section-title fw-lighter mb-auto">
                                 <a href="{% url 'post_detail' post.slug %}" class="text-decoration-none text-dark">
@@ -68,7 +67,7 @@
                                 <span>{{ post.published_at|date:"M d, Y" }}</span>
                             </div>
                         </div>
-                        
+
                         <div class="card-body pt-0">
                             <p class="section-title">{{ post.content|truncatechars:200 }}</p>
                             <a href="{% url 'post_detail' post.slug %}" class="btn btn-outline-primary">
@@ -90,27 +89,30 @@
                 <ul class="pagination justify-content-center">
                     {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
-                           aria-label="Previous">
+                        <a class="page-link"
+                            href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     {% endif %}
-                    
+
                     {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
                     <li class="page-item active"><span class="page-link">{{ num }}</span></li>
                     {% else %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+                        <a class="page-link"
+                            href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
                     </li>
                     {% endif %}
                     {% endfor %}
 
                     {% if page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
-                           aria-label="Next">
+                        <a class="page-link"
+                            href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -125,36 +127,36 @@
 
 {% block extra_css %}
 .highlight {
-    background-color: #fff3cd;
-    padding: 0.2em;
-    border-radius: 3px;
+background-color: #fff3cd;
+padding: 0.2em;
+border-radius: 3px;
 }
 .card {
-    transition: transform 0.2s, box-shadow 0.2s;
-    border-radius: 15px;
+transition: transform 0.2s, box-shadow 0.2s;
+border-radius: 15px;
 }
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+transform: translateY(-5px);
+box-shadow: 0 10px 20px rgba(0,0,0,0.12);
 }
 .hover-lift:hover {
-    transform: translateY(-3px);
+transform: translateY(-3px);
 }
 .list-group-item {
-    border: none;
-    border-left: 3px solid transparent;
+border: none;
+border-left: 3px solid transparent;
 }
 .list-group-item:hover {
-    border-left-color: #0d6efd;
-    background-color: #f8f9fa;
+border-left-color: #0d6efd;
+background-color: #f8f9fa;
 }
 .pagination .page-link {
-    border-radius: 8px;
-    margin: 0 5px;
-    border: none;
+border-radius: 8px;
+margin: 0 5px;
+border: none;
 }
 .page-item.active .page-link {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+background-color: #0d6efd;
+border-color: #0d6efd;
 }
 {% endblock %}

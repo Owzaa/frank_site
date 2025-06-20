@@ -1,11 +1,18 @@
 from django.contrib import admin
+from . models import Category,Product,Order,ProductImage
 
-from . models import Category,Product,Order
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1
 
+admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [ProductImageInline]
+    list_display = ['name', 'price']
 
 
 # Registered models.
 
 admin.site.register(Category)
-admin.site.register(Product)
 admin.site.register(Order)
+admin.site.register(ProductImage)

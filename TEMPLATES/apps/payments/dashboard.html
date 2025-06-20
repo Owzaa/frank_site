@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Payment Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Payment Menu</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'payments_dashboard' %}" class="list-group-item list-group-item-action active">
+                        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'payment_methods' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-credit-card me-2"></i> Payment Methods
+                    </a>
+                    <a href="{% url 'payments' %}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-money-bill-wave me-2"></i> Make a Payment
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Payment History</h5>
+                </div>
+                <div class="card-body">
+                    {% if payment_history %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Method</th>
+                                        <th>Status</th>
+                                        <th>Transaction ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for payment in payment_history %}
+                                    <tr>
+                                        <td>{{ payment.created_at|date:"M d, Y" }}</td>
+                                        <td>${{ payment.amount }}</td>
+                                        <td>
+                                            {% if payment.payment_method_type == 'card' %}
+                                                <i class="fab fa-cc-{{ payment.card_brand|lower }}"></i> 
+                                                {{ payment.card_brand }} ending in {{ payment.last_4 }}
+                                            {% elif payment.payment_method_type == 'paypal' %}
+                                                <i class="fab fa-paypal"></i> PayPal
+                                            {% else %}
+                                                {{ payment.payment_method }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if payment.status == 'Completed' %}
+                                                <span class="badge bg-success">{{ payment.status }}</span>
+                                            {% elif payment.status == 'Failed' %}
+                                                <span class="badge bg-danger">{{ payment.status }}</span>
+                                            {% else %}
+                                                <span class="badge bg-warning text-dark">{{ payment.status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ payment.transaction_id }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> You don't have any payment history yet.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Payment Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card bg-light mb-3">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Total Spent</h6>
+                                    <h3 class="card-text">${{ total_spent }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light mb-3">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Payments Made</h6>
+                                    <h3 class="card-text">{{ payment_count }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light mb-3">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Saved Methods</h6>
+                                    <h3 class="card-text">{{ saved_methods_count }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block products_container %}
+<div class="container py-5">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'shop' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'view_cart' %}">Shopping Cart</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'checkout' %}">Checkout</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Payment Confirmation</li>
+    </ol>
+  </nav>
+
+  <!-- Page Title -->
+  <div class="row mb-5">
+    <div class="col-12 text-center">
+      <h1 class="section-title">Payment Confirmation</h1>
+      <div class="title-separator"></div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body text-center p-5">
+          {% if payment.status == 'completed' %}
+            <div class="mb-4">
+              <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+            </div>
+            <h2 class="mb-3">Payment Successful!</h2>
+            <p class="lead mb-4">Your order has been placed successfully. Thank you for shopping with us!</p>
+            <div class="alert alert-success mb-4">
+              <p class="mb-1"><strong>Order Number:</strong> {{ order.id }}</p>
+              <p class="mb-1"><strong>Payment Method:</strong> {{ payment.payment_method }}</p>
+              <p class="mb-1"><strong>Amount:</strong> R{{ payment.amount }}</p>
+              <p class="mb-0"><strong>Date:</strong> {{ payment.created_at|date:"F d, Y" }}</p>
+            </div>
+          {% elif payment.status == 'pending' %}
+            <div class="mb-4">
+              <i class="bi bi-hourglass-split text-warning" style="font-size: 5rem;"></i>
+            </div>
+            <h2 class="mb-3">Payment Processing</h2>
+            <p class="lead mb-4">Your payment is being processed. Please do not close this page.</p>
+            <div class="spinner-border text-primary mb-4" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p>This may take a few moments. You will be redirected automatically when the payment is complete.</p>
+          {% else %}
+            <div class="mb-4">
+              <i class="bi bi-x-circle-fill text-danger" style="font-size: 5rem;"></i>
+            </div>
+            <h2 class="mb-3">Payment Failed</h2>
+            <p class="lead mb-4">Unfortunately, your payment could not be processed.</p>
+            <div class="alert alert-danger mb-4">
+              <p>{{ error_message|default:"There was an error processing your payment. Please try again or use a different payment method." }}</p>
+            </div>
+            <a href="{% url 'checkout' %}" class="btn btn-primary">Try Again</a>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if payment.status == 'completed' %}
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Order Details</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="table-light">
+                <tr>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th class="text-end">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                  <td>{{ item.product.name }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td class="text-end">R{{ item.price }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="2" class="text-end">Total:</th>
+                  <th class="text-end">R{{ order.total_price }}</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Shipping Information</h5>
+        </div>
+        <div class="card-body">
+          <p><strong>Name:</strong> {{ order.user.first_name }} {{ order.user.last_name }}</p>
+          <p><strong>Email:</strong> {{ order.user.email }}</p>
+          <p><strong>Address:</strong> {{ order.shipping_address }}</p>
+          <p><strong>City:</strong> {{ order.city }}</p>
+          <p><strong>Postal Code:</strong> {{ order.postal_code }}</p>
+          <p><strong>Country:</strong> {{ order.country }}</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="{% url 'order_history' %}" class="btn btn-outline-primary me-2">View Order History</a>
+        <a href="{% url 'shop' %}" class="btn btn-primary">Continue Shopping</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% if payment.status == 'pending' %}
+<script>
+  // Simulate payment processing and redirect
+  setTimeout(function() {
+    window.location.href = "{% url 'payment_confirmation' payment.id %}?status=completed";
+  }, 5000);
+</script>
+{% endif %}
+{% endblock %}

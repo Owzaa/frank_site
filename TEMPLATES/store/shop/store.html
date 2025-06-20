@@ -1,45 +1,414 @@
-<!DOCTYPE html>
-<html>
+{% extends "shop/base.html" %}
 {% load static %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>{% block title %} My Store {% endblock %}</title>
-
-    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
-
-    <!--stylesheet-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/heroes/hero-3/assets/css/hero-3.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-
-  </head>
-  <body>
-
-    <div class="sidebar justify-center"  style="background-color:#AA4D2A; width:150px;height:100vh">
-
-        <a class="navbar-brand" href="/">
-          <div class="flex pt-3 py-2 mx-5"><img
-              src="{% static 'assets/icons/T-white.png' %}"
-              alt="logo"
-              width="35px"/> </div>
-            </a>  <h1 class="text-center text-white hover:bg-white font-bold">SHOP</h1>
-      <ul  class="nav nav-item justify-center">
-        <li class="nav-item"><a  class="nav-link text-white" href="{% url 'home' %}">Products</a></li>
-        <li class="nav-item"><a  class="nav-link text-white" href="{% url 'home' %}">Categories</a></li>
-        <li class="nav-item"><a  class="nav-link text-white" href="{% url 'home' %}">Cart</a></li>
-        <li class="nav-item"><a  class="nav-link text-white" href="{% url 'home' %}">Checkout</a></li>
-      </ul>
-    </div>
-
 {% block products_container %}
+<style>
+  .swiper-slide {
+    width: 260px;
+  }
+  .swiper-button-next, .swiper-button-prev {
+    color: #AA4D2A;
+  }
+  .product-card-hover:hover {
+    transform: translateY(-4px);
+    transition: transform 0.2s ease-in-out;
+  }
+  .text-shadow {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+  }
+</style>
+<div class="container mt-0">
 
+  <!-- 1. HERO BANNER -->
+  <section class="position-relative mb-5">
+    <img src="{% static 'assets/hero-image.jpg' %}" class="w-100" style="height: 350px; object-fit: cover; border-radius: 12px;">
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center"
+         style="background: rgba(0, 0, 0, 0.4); border-radius: 12px;">
+      <h1 class="text-white fw-bold display-4 text-shadow">Discover Our Collection</h1>
+      <p class="text-white lead d-none d-md-block text-shadow">Find your perfect product today</p>
+    </div>
+  </section>
+  <!-- 3. FILTER BAR -->
+  <section class="container mb-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white">
+        <h3 class="section-title mb-0">Find Products</h3>
+      </div>
+      <div class="card-body">
+        <form method="get" class="row g-3 filter-bar">
+          <div class="col-md-4">
+            <label for="search-input" class="form-label">Search Products</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+              <input type="text" id="search-input" name="q" value="{{ request.GET.q }}" placeholder="Search by name, description..." class="form-control">
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <label for="category-select" class="form-label">Category</label>
+            <select id="category-select" name="category" class="form-select">
+              <option value="">All Categories</option>
+              {% for category in categories %}
+              <option value="{{ category.id }}" {% if request.GET.category|stringformat:"s" == category.id|stringformat:"s" %}selected{% endif %}>
+                {{ category.name }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          
+          <div class="col-md-3">
+            <label for="sort-select" class="form-label">Sort By</label>
+            <select id="sort-select" name="sort" class="form-select">
+              <option value="" {% if not request.GET.sort %}selected{% endif %}>Featured</option>
+              <option value="price_asc" {% if request.GET.sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+              <option value="price_desc" {% if request.GET.sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+              <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
+            </select>
+          </div>
+          
+          <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-filter me-2"></i>Apply Filters
+            </button>
+          </div>
+          
+          {% if request.GET.q or request.GET.category or request.GET.sort %}
+          <div class="col-12 mt-2">
+            <div class="d-flex align-items-center">
+              <span class="me-2">Active filters:</span>
+              {% if request.GET.q %}
+              <span class="badge bg-primary me-2">Search: {{ request.GET.q }} <a href="{{ request.path }}?{% for key, value in request.GET.items %}{% if key != 'q' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="text-white ms-1"><i class="bi bi-x-circle"></i></a></span>
+              {% endif %}
+              
+              {% if request.GET.category %}
+              <span class="badge bg-primary me-2">Category: {% for cat in categories %}{% if cat.id|stringformat:'s' == request.GET.category %}{{ cat.name }}{% endif %}{% endfor %} <a href="{{ request.path }}?{% for key, value in request.GET.items %}{% if key != 'category' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="text-white ms-1"><i class="bi bi-x-circle"></i></a></span>
+              {% endif %}
+              
+              {% if request.GET.sort %}
+              <span class="badge bg-primary me-2">Sort: 
+                {% if request.GET.sort == 'price_asc' %}Price: Low to High
+                {% elif request.GET.sort == 'price_desc' %}Price: High to Low
+                {% elif request.GET.sort == 'newest' %}Newest First
+                {% endif %}
+                <a href="{{ request.path }}?{% for key, value in request.GET.items %}{% if key != 'sort' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="text-white ms-1"><i class="bi bi-x-circle"></i></a>
+              </span>
+              {% endif %}
+              
+              <a href="{{ request.path }}" class="btn btn-sm btn-outline-secondary ms-auto">Clear All Filters</a>
+            </div>
+          </div>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </section>
+  <!-- 2. CATEGORY SLIDERS -->
+  {% for category_group in category_products %}
+  <section class="container mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="section-title">{{ category_group.category.name }}</h3>
+      <a href="?category={{ category_group.category.id }}" class="btn text-white" style="background-color: #aa4c2abe;">
+        <i class="fas fa-th me-1"></i> View All
+      </a>
+    </div>
+    
+    <div class="swiper categorySwiper categorySwiper-{{ forloop.counter }}">
+      <div class="swiper-wrapper">
+        {% for product in category_group.products %}
+        <div class="swiper-slide">
+          <div class="card h-100 shadow-lg border-0">
+            <div class="position-relative">
+              <button class="fw-lighter mt-3 m-0 text-light btn btn-outline border-0 badge text-center" style="
+                display:flex;
+                position: absolute;
+                border-radius: 10%;
+                padding-top: 15px 15px;
+                width: 50px; height: auto;
+                background-color:#aa5b2a;
+                color: inherit;
+                float: left;
+                align-items: center;
+                justify-content: center;
+              ">best-seller</button>
+              {% if product.images.first %}
+              <img src="{{ product.images.first.image.url }}" class="card-img img-fluid" alt="{{ product.name }}"
+                   style="object-fit: cover; height: 100%;">
+              {% elif product.image_url %}
+              <img src="{{ product.image_url.url }}" class="card-img img-fluid" alt="{{ product.name }}"
+                   style="object-fit: cover; height: 100%;">
+              {% else %}
+              <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
+              </div>
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{ product.name }}</h5>
+              <div class="card-text text-inherit">
+                <span class="text-inherit fw-bolder">Description:</span>
+                <p class="text-inherit text-smaller">{{ product.description|truncatewords:150 }}</p>
+              </div>
+              <span class="mb-5 fw-lighter text-smaller justify-content">
+                <small class="text-inherit text-smaller mb-0">Price: R{{ product.price }}</small>
+                {% if product.color %}
+                <small class="text-inherit text-smaller">Colors: {{ product.color }}</small>
+                {% endif %}
+                {% if product.size %}
+                <small class="text-inherit text-smaller mb-5">Sizes: {{ product.size }}</small>
+                {% endif %}
+              </span>
+              <a href="{% url 'product_detail' product.pk %}" class="flex me-2 btn mt-5 p-3 d-block btn-outline text-inherit" style="border:none;border-color:#aa4c2a17;border-radius:15px;color:#aa4c2a8f;background-color: #aa4c2a17;">View</a>
+              <br/>
+              <a href="{% url 'add_to_cart' product.pk %}" class="flex me-2 btn p-3 d-block btn-outline text-inherit" style="border:solid 0.5px;border-color:#aa551449;border-radius:15px;color:inherit;background-color: inherit;">Add to Cart</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+  {% empty %}
+  <section class="container mb-5">
+    <div class="alert alert-info">
+      <h5>No product categories found</h5>
+      <p>Please add some product categories and products to see them displayed here.</p>
+    </div>
+  </section>
+  {% endfor %}
+
+
+
+  <!-- 4. ALL PRODUCTS GRID -->
+  <section class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="section-title">All Products</h3>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary" id="grid-view-btn" title="Grid View">
+          <i class="fas fa-th"></i>
+        </button>
+        <button class="btn btn-outline-secondary" id="list-view-btn" title="List View">
+          <i class="fas fa-list"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="row" id="products-container">
+      {% for product in products %}
+      <div class="col-md-4 mb-4 product-item">
+        <div class="card h-100 product-card-hover">
+          <div class="position-relative">
+            <span class="category-badge">{{ product.category.name }}</span>
+            <span class="price-badge">R{{ product.price }}</span>
+            {% if product.images.first %}
+            <img src="{{ product.images.first.image.url }}" class="card-img-top" style="object-fit: cover; height: 250px;" alt="{{ product.name }}">
+            {% elif product.image_url %}
+            <img src="{{ product.image_url.url }}" class="card-img-top" style="object-fit: cover; height: 250px;" alt="{{ product.name }}">
+            {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+              <i class="fas fa-image text-muted" style="font-size: 4rem;"></i>
+            </div>
+            {% endif %}
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text text-muted flex-grow-1">{{ product.description|truncatewords:15 }}</p>
+            <div class="d-grid gap-2 mt-3">
+              <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm btn-outline-primary">View Details</a>
+              <a href="{% url 'add_to_cart' product.pk %}" class="btn btn-sm btn-outline-success"><i class="fas fa-shopping-cart me-1"></i> Add to Cart</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% if products|length == 0 %}
+      <div class="col-12">
+        <div class="alert alert-warning text-center p-5">
+          <h4 class="mb-3">No Products Found 😕</h4>
+          <p>Try changing your filters or search keyword.</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- 5. PAGINATION -->
+  <section class="container mt-4 mb-5">
+    <div class="d-flex justify-content-center">
+      {% if products.has_other_pages %}
+      <nav aria-label="Product pagination">
+        <ul class="pagination pagination-rounded">
+          {% if products.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?q={{ request.GET.q }}&category={{ request.GET.category }}&page={{ products.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">&laquo;</span>
+          </li>
+          {% endif %}
+          
+          {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+            <li class="page-item">
+              <a class="page-link" href="?q={{ request.GET.q }}&category={{ request.GET.category }}&page={{ num }}">{{ num }}</a>
+            </li>
+            {% endif %}
+          {% endfor %}
+          
+          {% if products.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?q={{ request.GET.q }}&category={{ request.GET.category }}&page={{ products.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">&raquo;</span>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </section>
+
+</div>
 {% endblock %}
 
+{% block extra_js %}
 
-  </body>
-</html>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Initialize all category swipers
+    document.querySelectorAll('.categorySwiper').forEach((swiperEl, index) => {
+      new Swiper(swiperEl, {
+        slidesPerView: "auto",
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
+        },
+        navigation: {
+          nextEl: swiperEl.querySelector('.swiper-button-next'),
+          prevEl: swiperEl.querySelector('.swiper-button-prev'),
+        },
+        pagination: {
+          el: swiperEl.querySelector('.swiper-pagination'),
+          clickable: true,
+          dynamicBullets: true
+        },
+        breakpoints: {
+          640: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 }
+        },
+        on: {
+          init: function() {
+            // Add animation delay to slides
+            this.slides.forEach((slide, slideIndex) => {
+              slide.style.transitionDelay = `${slideIndex * 0.1}s`;
+            });
+          }
+        }
+      });
+    });
+    
+    // Grid/List view toggle functionality
+    const gridViewBtn = document.getElementById('grid-view-btn');
+    const listViewBtn = document.getElementById('list-view-btn');
+    const productsContainer = document.getElementById('products-container');
+    const productItems = document.querySelectorAll('.product-item');
+    
+    // Set default active state
+    gridViewBtn.classList.add('active');
+    
+    // Grid view (default)
+    gridViewBtn.addEventListener('click', () => {
+      gridViewBtn.classList.add('active');
+      listViewBtn.classList.remove('active');
+      
+      productItems.forEach(item => {
+        item.classList.remove('col-12');
+        item.classList.add('col-md-4');
+        
+        // Reset card layout
+        const card = item.querySelector('.card');
+        card.classList.remove('flex-row');
+        
+        // Reset image container
+        const imgContainer = item.querySelector('.position-relative');
+        if (imgContainer) {
+          imgContainer.style.width = '100%';
+        }
+        
+        // Reset image size
+        const img = item.querySelector('.card-img-top, .bg-light');
+        if (img) {
+          img.style.height = '250px';
+          img.style.width = '100%';
+        }
+        
+        // Adjust card body
+        const cardBody = item.querySelector('.card-body');
+        if (cardBody) {
+          cardBody.style.width = '100%';
+        }
+      });
+    });
+    
+    // List view
+    listViewBtn.addEventListener('click', () => {
+      listViewBtn.classList.add('active');
+      gridViewBtn.classList.remove('active');
+      
+      productItems.forEach(item => {
+        item.classList.remove('col-md-4');
+        item.classList.add('col-12');
+        
+        // Change card layout to horizontal
+        const card = item.querySelector('.card');
+        card.classList.add('flex-row');
+        
+        // Adjust image container
+        const imgContainer = item.querySelector('.position-relative');
+        if (imgContainer) {
+          imgContainer.style.width = '200px';
+        }
+        
+        // Adjust image size for list view
+        const img = item.querySelector('.card-img-top, .bg-light');
+        if (img) {
+          img.style.height = '200px';
+          img.style.width = '200px';
+        }
+        
+        // Adjust card body
+        const cardBody = item.querySelector('.card-body');
+        if (cardBody) {
+          cardBody.style.width = 'calc(100% - 200px)';
+        }
+      });
+    });
+    
+    // Initialize any GLightbox instances for product images
+    if (typeof GLightbox !== 'undefined') {
+      const lightbox = GLightbox({
+        selector: '.product-image-lightbox',
+        touchNavigation: true,
+        loop: true
+      });
+    }
+  });
+</script>
+
+
+{% endblock %}

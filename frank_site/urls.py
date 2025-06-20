@@ -8,13 +8,12 @@ admin.site.site_title = "Themba-Tswai"
 admin.site.index_title = "Manage your Applications Admin-Side"
 
 urlpatterns = [
-
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),  # Django authentication URLs
     path('', include('HOME.urls')),
     path('', include('APPS.STORE.urls')),
     path('', include('APPS.PORTFOLIO.urls')),
-    path('product/', include('APPS.STORE.urls')),
+    # Removed duplicate STORE.urls include
     path('blog/', include('APPS.BLOG.urls')),
-    path('payment/', include('APPS.PAYMENTS.urls')),
-
-]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+    path('payments/', include('APPS.PAYMENTS.urls')),
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

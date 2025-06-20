@@ -1,0 +1,118 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block products_container %}
+<div class="container py-5">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'shop' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'order_history' %}">Order History</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Order Confirmation</li>
+    </ol>
+  </nav>
+
+  <!-- Page Title -->
+  <div class="row mb-5">
+    <div class="col-12 text-center">
+      <h1 class="section-title">Order Confirmation</h1>
+      <div class="title-separator"></div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0 mb-4 text-center">
+        <div class="card-body p-5">
+          <div class="mb-4">
+            <i class="bi bi-check-circle-fill" style="font-size: 5rem; color: var(--primary-color);"></i>
+          </div>
+          <h2 class="mb-3">Thank You for Your Order!</h2>
+          <p class="lead mb-4">Your order #{{ order.id }} has been successfully placed.</p>
+          
+          <div class="order-details mb-4 text-start">
+            <div class="row">
+              <div class="col-md-6">
+                <h5 class="mb-3">Order Summary</h5>
+                <p><strong>Order Number:</strong> #{{ order.id }}</p>
+                <p><strong>Order Date:</strong> {{ order.created_at|date:"F d, Y" }}</p>
+                <p><strong>Payment Method:</strong> {{ order.payment.payment_method|title }}</p>
+                <p><strong>Order Status:</strong> 
+                  <span class="badge {% if order.status == 'completed' %}bg-success{% elif order.status == 'pending' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+                    {{ order.status|title }}
+                  </span>
+                </p>
+              </div>
+              <div class="col-md-6">
+                <h5 class="mb-3">Shipping Information</h5>
+                <p><strong>Name:</strong> {{ order.user.first_name }} {{ order.user.last_name }}</p>
+                <p><strong>Email:</strong> {{ order.user.email }}</p>
+                <p><strong>Address:</strong> {{ order.shipping_address }}</p>
+                <p><strong>City:</strong> {{ order.city }}, {{ order.postal_code }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="order-items mb-4">
+            <h5 class="mb-3 text-start">Order Items</h5>
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="table-light">
+                  <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th class="text-end">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in order.items.all %}
+                  <tr>
+                    <td class="text-start">{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td class="text-end">R{{ item.total_price }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot class="table-light">
+                  <tr>
+                    <th colspan="2" class="text-end">Subtotal:</th>
+                    <td class="text-end">R{{ order.total_price }}</td>
+                  </tr>
+                  <tr>
+                    <th colspan="2" class="text-end">Shipping:</th>
+                    <td class="text-end">Free</td>
+                  </tr>
+                  <tr>
+                    <th colspan="2" class="text-end">Total:</th>
+                    <td class="text-end"><strong>R{{ order.total_price }}</strong></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <p>A confirmation email has been sent to {{ order.user.email }}</p>
+            <div class="d-flex justify-content-center gap-3 mt-4">
+              <a href="{% url 'order_detail' order.id %}" class="btn btn-primary">
+                <i class="bi bi-eye me-2"></i>View Order Details
+              </a>
+              <a href="{% url 'shop' %}" class="btn btn-outline-primary">
+                <i class="bi bi-cart me-2"></i>Continue Shopping
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .order-details {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+  }
+</style>
+{% endblock %}

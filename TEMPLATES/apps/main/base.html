@@ -42,7 +42,7 @@
   html {
     background-color: #AA4D2A;
 
-    height: 100%;
+    max-height: auto;
     overflow-x: hidden;
   }
 
@@ -576,7 +576,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}"
-              href="{% url 'blog' %}">Season-Scoop</a>
+              href="{% url 'blog' %}">Blog</a>
           </li>
           <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.url_name == 'shop' %}active{% endif %}" href="{% url 'shop' %}">Shop</a>

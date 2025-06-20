@@ -1,0 +1,317 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block products_container %}
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'shop' %}" class="text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop' %}" class="text-decoration-none">Store</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop' %}?category={{ product.category.id }}" class="text-decoration-none">{{ product.category.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="product-gallery-card shadow-sm rounded overflow-hidden">
+                <div id="productCarousel" class="carousel slide" data-bs-ride="false">
+                    <div class="carousel-inner ratio ratio-1x1">
+                        {% for image in product.images.all %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <a href="{{ image.image.url }}" class="product-image-lightbox">
+                                <img src="{{ image.image.url }}" class="d-block w-100 h-100 object-fit-cover" alt="{{ product.name }}">
+                            </a>
+                        </div>
+                        {% empty %}
+                        <div class="carousel-item active">
+                            <img src="{% static 'images/no-image.jpg' %}" class="d-block w-100 h-100 object-fit-cover" alt="No image available">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Thumbnails -->
+            <div class="d-flex mt-3 gap-2 justify-content-center flex-wrap">
+                {% for image in product.images.all %}
+                <div class="thumbnail-item shadow-sm" data-bs-slide-to="{{ forloop.counter0 }}" data-bs-target="#productCarousel">
+                    <img src="{{ image.image.url }}" class="img-thumbnail" alt="Thumbnail" width="70" height="70">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+                    <h1 class="product-title h2 fw-bold mb-2">{{ product.name }}</h1>
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge bg-primary me-2">{{ product.category.name }}</span>
+                        {% if product.stock > 0 %}
+                        <span class="badge bg-success">In Stock ({{ product.stock }} available)</span>
+                        {% else %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                        {% endif %}
+                    </div>
+                    <h3 class="product-price text-primary fw-bold mb-3">R{{ product.price }}</h3>
+                    <hr>
+                    <div class="product-description mb-4">
+                        <p class="text-muted">{{ product.description }}</p>
+                    </div>
+                    
+                    {% if product.stock > 0 %}
+                    <div class="mb-4">
+                        <h5 class="mb-3">Quantity</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="input-group me-3" style="width: 130px;">
+                                <button class="btn btn-outline-primary" type="button" id="decrease-qty">-</button>
+                                <input type="text" class="form-control text-center" value="1" id="quantity" readonly>
+                                <button class="btn btn-outline-primary" type="button" id="increase-qty">+</button>
+                            </div>
+                            <small class="text-muted">Max: {{ product.stock }} units</small>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mb-4">
+                        <form action="{% url 'add_to_cart' product.pk %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" id="quantity-input" value="1">
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                            </button>
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-warning mb-4">
+                        <i class="bi bi-exclamation-triangle me-2"></i>This product is currently out of stock. Please check back later.
+                    </div>
+                    {% endif %}
+                    
+                    <div class="product-meta p-3 bg-light rounded">
+                        <h5 class="mb-3">Product Details</h5>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2"><i class="bi bi-tag-fill me-2"></i><strong>SKU:</strong> {{ product.id }}</li>
+                            <li class="mb-2"><i class="bi bi-box-seam me-2"></i><strong>Category:</strong> {{ product.category.name }}</li>
+                            {% if product.brand %}
+                            <li class="mb-2"><i class="bi bi-award me-2"></i><strong>Brand:</strong> {{ product.brand }}</li>
+                            {% endif %}
+                            <li class="mb-2"><i class="bi bi-share-fill me-2"></i><strong>Share:</strong> 
+                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-facebook"></i></a>
+                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-twitter"></i></a>
+                                <a href="#" class="text-decoration-none"><i class="bi bi-pinterest"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products Section -->
+    {% if related_products %}
+    <div class="related-products py-5 mt-4">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="section-title">You May Also Like</h2>
+                <div class="title-separator mx-auto"></div>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for related in related_products %}
+            <div class="col">
+                <div class="card product-card h-100 shadow-sm border-0 position-relative">
+                    <div class="product-image-container overflow-hidden">
+                        <a href="{% url 'product_detail' related.pk %}" class="text-decoration-none">
+                            {% if related.images.first %}
+                            <img src="{{ related.images.first.image.url }}" class="card-img-top product-image" alt="{{ related.name }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                            <img src="{% static 'images/no-image.jpg' %}" class="card-img-top product-image" alt="No image available" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                        </a>
+                        <div class="product-actions position-absolute top-0 end-0 p-2 d-flex gap-2">
+                            <a href="{% url 'product_detail' related.pk %}" class="btn btn-sm btn-light rounded-circle shadow-sm" title="View details">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <form action="{% url 'add_to_cart' related.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-sm btn-light rounded-circle shadow-sm" title="Add to cart">
+                                    <i class="bi bi-cart-plus"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <h5 class="card-title mb-1">
+                            <a href="{% url 'product_detail' related.pk %}" class="text-decoration-none text-dark">{{ related.name }}</a>
+                        </h5>
+                        <p class="text-muted small mb-2">{{ related.category.name }}</p>
+                        <p class="product-price fw-bold text-primary mb-0">R{{ related.price }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Continue Shopping Button -->
+    <div class="d-flex justify-content-center mt-4 mb-5">
+        <a href="{% url 'shop' %}" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left me-2"></i> Continue Shopping
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize GLightbox for product images
+    const lightbox = GLightbox({
+      selector: '.product-image-lightbox',
+      touchNavigation: true,
+      loop: true,
+      autoplayVideos: true
+    });
+    
+    // Make thumbnail items clickable
+    document.querySelectorAll('.thumbnail-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const slideIndex = this.getAttribute('data-bs-slide-to');
+        const carousel = bootstrap.Carousel.getInstance(document.querySelector('#productCarousel'));
+        if (carousel) {
+          carousel.to(parseInt(slideIndex));
+        }
+      });
+    });
+    
+    // Quantity selector functionality
+    const quantityInput = document.getElementById('quantity');
+    const quantityHiddenInput = document.getElementById('quantity-input');
+    const decreaseBtn = document.getElementById('decrease-qty');
+    const increaseBtn = document.getElementById('increase-qty');
+    
+    // Get max stock from product
+    const maxStock = Number('{% if product.stock %}{{ product.stock }}{% else %}10{% endif %}');
+    
+    if (quantityInput && quantityHiddenInput && decreaseBtn && increaseBtn) {
+      // Sync the visible input with the hidden input used in the form
+      const syncInputs = () => {
+        quantityHiddenInput.value = quantityInput.value;
+      };
+      
+      decreaseBtn.addEventListener('click', () => {
+        const currentValue = parseInt(quantityInput.value);
+        if (currentValue > 1) {
+          quantityInput.value = currentValue - 1;
+          syncInputs();
+        }
+      });
+      
+      increaseBtn.addEventListener('click', () => {
+        const currentValue = parseInt(quantityInput.value);
+        if (currentValue < maxStock) {
+          quantityInput.value = currentValue + 1;
+          syncInputs();
+        }
+      });
+      
+      // Prevent manual entry of invalid values
+      quantityInput.addEventListener('change', () => {
+        let value = parseInt(quantityInput.value);
+        if (isNaN(value) || value < 1) {
+          quantityInput.value = 1;
+        } else if (value > maxStock) {
+          quantityInput.value = maxStock;
+        }
+        syncInputs();
+      });
+      
+      // Initialize sync
+      syncInputs();
+    }
+    
+    // Add hover effect to product images
+    const productImages = document.querySelectorAll('.product-image');
+    productImages.forEach(img => {
+      img.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05)';
+        this.style.transition = 'transform 0.3s ease';
+      });
+      
+      img.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+      });
+    });
+  });
+</script>
+
+<style>
+  /* Product gallery styles */
+  .product-gallery-card {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .thumbnail-item {
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+  
+  .thumbnail-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  /* Product card styles */
+  .product-card {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .product-image {
+    transition: transform 0.3s ease;
+  }
+  
+  .product-actions {
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+  }
+  
+  .product-card:hover .product-actions {
+    opacity: 1;
+  }
+  
+  /* Title separator */
+  .title-separator {
+    width: 80px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 15px 0;
+  }
+  
+  .title-separator.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+{% endblock %}
