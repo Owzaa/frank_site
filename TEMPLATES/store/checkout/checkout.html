@@ -1,7 +1,7 @@
-{% extends "shop/base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block products_container %}
+{% block content %}
 <div class="container py-5">
   <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="mb-4">
@@ -187,43 +187,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Toggle payment method details
-    const paymentOptions = document.querySelectorAll('input[name="payment_option"]');
-    const creditCardDetails = document.getElementById('credit_card_details');
-    const paypalDetails = document.getElementById('paypal_details');
-    const paymentMethodInput = document.getElementById('payment_method');
-    
-    paymentOptions.forEach(option => {
-      option.addEventListener('change', function() {
-        if (this.value === 'credit_card') {
-          creditCardDetails.classList.remove('d-none');
-          paypalDetails.classList.add('d-none');
-          paymentMethodInput.value = 'credit_card';
-        } else if (this.value === 'paypal') {
-          creditCardDetails.classList.add('d-none');
-          paypalDetails.classList.remove('d-none');
-          paymentMethodInput.value = 'paypal';
-        }
-      });
-    });
-    
-    // Set initial payment method
-    paymentMethodInput.value = 'credit_card';
-    
-    // Handle place order button
-    const placeOrderBtn = document.getElementById('place-order-btn');
-    const checkoutForm = document.getElementById('checkout-form');
-    
-    placeOrderBtn.addEventListener('click', function() {
-      if (checkoutForm.checkValidity()) {
-        checkoutForm.submit();
-      } else {
-        checkoutForm.reportValidity();
-      }
-    });
-  });
-</script>
+{% block scripts %}
+<script src="{% static 'js/global.js' %}"></script>
 {% endblock %}

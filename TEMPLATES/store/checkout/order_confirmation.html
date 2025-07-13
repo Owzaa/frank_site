@@ -1,7 +1,7 @@
-{% extends "shop/base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block products_container %}
+{% block content %}
 <div class="container py-5">
   <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="mb-4">
@@ -107,12 +107,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
-<style>
-  .order-details {
-    background-color: #f8f9fa;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-  }
-</style>
+{% block scripts %}
+<script src="{% static 'js/global.js' %}"></script>
 {% endblock %}

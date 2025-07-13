@@ -14,7 +14,6 @@ urlpatterns = [
     
     # Payment processing
     path('process/<int:order_id>/', views.process_payment, name='process_payment'),
-    path('paypal/redirect/<int:payment_id>/', views.paypal_redirect, name='paypal_redirect'),
-    path('paypal/return/<int:payment_id>/', views.paypal_return, name='paypal_return'),
-    path('paypal/cancel/<int:payment_id>/', views.paypal_cancel, name='paypal_cancel'),
+    path('paypal/return/<int:order_id>/', views.paypal_return, name='paypal_return'),
+    path('paypal/cancel/<int:order_id>/', views.paypal_cancel, name='paypal_cancel'),
 ]

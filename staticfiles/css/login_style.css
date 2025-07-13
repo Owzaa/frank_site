@@ -1,0 +1,38 @@
+form{
+  display: flex;
+  margin-top:100px;
+  margin-bottom:50vh;
+  justify-content:center;
+  align-items:center;
+  height: auto;
+}
+footer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#ccc;
+}
+input{
+  position: relative;
+  padding: 15px 15px 5px 5px;
+  margin: auto;
+  border: solid .5px #ddd;
+  border-radius: 15px;
+}
+label{
+  display: flex;
+  font-style: normal;
+  text-transform:capitalize;
+  color: #ccc;
+}
+button{
+  display: block;
+  color: #ddd;
+  background-color: indianred;
+  border: none;
+  padding: 15px 15px;
+  border-radius: 15px;
+  text-transform: capitalize;
+  font-family: sans-serif;
+  cursor: pointer;
+}

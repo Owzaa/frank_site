@@ -1,7 +1,7 @@
-{% extends "shop/base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block products_container %}
+{% block content %}
 <div class="container py-5">
   <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="mb-4">
@@ -118,13 +118,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
-{% if payment.status == 'pending' %}
-<script>
-  // Simulate payment processing and redirect
-  setTimeout(function() {
-    window.location.href = "{% url 'payment_confirmation' payment.id %}?status=completed";
-  }, 5000);
-</script>
-{% endif %}
+{% block scripts %}
+<script src="{% static 'js/global.js' %}"></script>
 {% endblock %}

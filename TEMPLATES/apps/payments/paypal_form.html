@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4 text-center">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <img src="{% static 'assets/paypal.png' %}" alt="PayPal" height="60">
+                    </div>
+                    <h2 class="mb-3">Redirecting to PayPal...</h2>
+                    <p class="lead mb-4">Please wait while we redirect you to PayPal to complete your payment for order #{{ order.id }}.</p>
+                    <div class="spinner-border text-primary mb-4" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal-form">
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary d-none">Continue to PayPal</button>
+                    </form>
+                    <p class="text-muted mt-3">If you are not redirected automatically, please click the button above.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('paypal-form').submit();
+    });
+</script>
+{% endblock %}

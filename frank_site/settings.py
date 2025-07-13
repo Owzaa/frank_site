@@ -14,7 +14,6 @@ import os
 from pathlib import Path
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,14 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zayj=w%8apcy@y4c)k6kj=z#5g574=wt#pq!))l5lhzse(0+$&'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-zayj=w%8apcy@y4c)k6kj=z#5g574=wt#pq!))l5lhzse(0+$&')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 
 # APPLICATION_DIR
-APPS_DIR = os.path.join(BASE_DIR, 'APPS')
+APPS_DIR = BASE_DIR / 'APPS'
 
 
 INSTALLED_APPS = [
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
     'APPS.STORE',
     'APPS.PAYMENTS',
     'django_bootstrap5',
+    'paypal.standard.ipn',
 ]
 
 # Authentication settings
@@ -67,16 +67,10 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'frank_site.urls'
 
 
-
-TEMPLATES_DIR = os.path.join(BASE_DIR, 'TEMPLATES')
-
-APP_TEMPLATE_DIR = os.path.join(TEMPLATES_DIR, 'apps')
-STORE_TEMPLATE_DIR = os.path.join(TEMPLATES_DIR, 'store')
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':[APP_TEMPLATE_DIR, STORE_TEMPLATE_DIR],
+        'DIRS': [BASE_DIR / 'TEMPLATES'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,7 +85,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'frank_site.wsgi.application'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['your-domain.com', '127.0.0.1', 'localhost']
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -140,20 +135,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'HOME/static'),
-]
 
 # Media files (User uploaded content)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# PayPal settings
+PAYPAL_RECEIVER_EMAIL = 'your-paypal-business-email@example.com'
+PAYPAL_TEST = True # Set to False in production

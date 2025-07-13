@@ -1,164 +1,9 @@
-{% extends 'main/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Portfolio{% endblock %}
 
 {% block content %}
-<style>
-    :root {
-        --primary: #AA4D2A;
-        --primary-soft: #d87e62;
-        --text: #2D2D2D;
-        --white: #FFFFFF;
-        --bg: #FFF8F6;
-        --border: #eee5e3;
-    }
-
-    /* Portfolio Header */
-    .portfolio-header {
-        text-align: center;
-        padding: 8rem 5% 4rem;
-        background: var(--bg);
-        border-bottom: 1px solid var(--border);
-    }
-
-    .portfolio-title {
-        font-size: 3.5rem;
-        color: var(--text);
-        margin-bottom: 1rem;
-        position: relative;
-        line-height: 1.2;
-    }
-
-    .portfolio-subtitle {
-        color: var(--primary-soft);
-        font-size: 1.25rem;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    /* Category Filters */
-    .filter-section {
-        background: var(--white);
-        padding: 2rem;
-        border-radius: 16px;
-        box-shadow: 0 4px 24px rgba(170, 77, 42, 0.08);
-    }
-
-    .filter-group {
-        display: grid;
-        gap: 0.75rem;
-    }
-
-     /* Add these styles to your existing CSS */
-     .filter-btn {
-        text-decoration: none !important;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        border: none;
-        border-radius: 12px;
-        background: var(--bg);
-        color: var(--text);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .filter-btn:hover {
-        text-decoration: none !important;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(170, 77, 42, 0.1);
-    }
-
-    .filter-btn.active {
-        background: var(--primary);
-        color: var(--white);
-        box-shadow: 0 4px 12px rgba(170, 77, 42, 0.2);
-    }
-
-    /* Remove outline on focus for better visual */
-    .filter-btn:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(170, 77, 42, 0.3);
-    }
-
-    .badge-count {
-        background: rgba(255,255,255,0.15);
-        color: inherit;
-        padding: 0.35rem 0.9rem;
-        border-radius: 20px;
-        font-size: 0.9em;
-    }
-
-    /* Project Grid */
-    .project-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-        padding: 2rem 0;
-    }
-
-    .project-card {
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        overflow: hidden;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        background: var(--white);
-    }
-
-    .project-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(170, 77, 42, 0.08);
-    }
-
-    .project-image {
-        height: 240px;
-        object-fit: cover;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .project-content {
-        padding: 1.5rem;
-    }
-
-    .project-title {
-        color: var(--text);
-        margin-bottom: 0.75rem;
-        font-size: 1.1rem;
-    }
-
-    .project-category {
-        color: var(--primary);
-        font-size: 0.9em;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-
-    /* Loading State */
-    .loading-overlay {
-        min-height: 400px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255,255,255,0.9);
-    }
-
-    @media (max-width: 768px) {
-        .portfolio-title {
-            font-size: 2.25rem;
-        }
-        
-        .filter-section {
-            padding: 1.5rem;
-        }
-        
-        .project-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-
 <div class="portfolio-header">
     <div class="container">
         <h1 class="portfolio-title">Portfolio</h1>
@@ -169,30 +14,27 @@
 <div class="container py-5">
     <div class="row g-4">
         <!-- Category Filters -->
- <!-- Modified category filter section -->
- <div class="col-lg-3">
-    <div class="filter-section">
-        <h5 class="mb-3">Filter Projects</h5>
-        <div class="filter-group">
-            <a href="{% url 'projects' %}"
-               class="filter-btn {% if not selected_category %}active{% endif %}">
-                All Work
-                <span class="badge-count">{{ total_projects }}</span>
-            </a>
-            {% for category in categories %}
-            <a href="{% url 'portfolio_categories' category.slug %}"
-               class="filter-btn {% if category.slug == selected_category.slug %}active{% endif %}">
-                {{ category.name }}
-                <span class="badge-count">{{ category.project_count }}</span>
-            </a>
-            {% empty %}
-            <div class="text-muted small">No categories available</div>
-            {% endfor %}
+        <div class="col-lg-3">
+            <div class="filter-section">
+                <h5 class="mb-3">Filter Projects</h5>
+                <div class="filter-group">
+                    <a href="{% url 'projects' %}"
+                       class="filter-btn {% if not selected_category %}active{% endif %}">
+                        All Work
+                        <span class="badge-count">{{ total_projects }}</span>
+                    </a>
+                    {% for category in categories %}
+                    <a href="{% url 'portfolio_categories' category.slug %}"
+                       class="filter-btn {% if category.slug == selected_category.slug %}active{% endif %}">
+                        {{ category.name }}
+                        <span class="badge-count">{{ category.project_count }}</span>
+                    </a>
+                    {% empty %}
+                    <div class="text-muted small">No categories available</div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
-
 
         <!-- Project Grid -->
         <div class="col-lg-9">
@@ -202,62 +44,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
-<script>
-    // Enhanced AJAX Loading
-    function loadProjects(url) {
-        const projectList = document.getElementById('project-list');
-        projectList.style.minHeight = '400px';
-        projectList.innerHTML = `
-            <div class="loading-overlay">
-                <div class="text-center">
-                    <div class="spinner-border" style="width: 3rem; height: 3rem; color: var(--primary);" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="mt-3" style="color: var(--primary);">Curating Projects...</p>
-                </div>
-            </div>
-        `;
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                projectList.innerHTML = data.html;
-                history.replaceState(null, '', url);
-                // Re-initialize any interactive elements
-                initHoverEffects();
-            })
-            .catch(error => {
-                projectList.innerHTML = `
-                    <div class="alert alert-danger" role="alert" style="color: var(--primary);">
-                        Error loading projects. Please refresh the page.
-                    </div>
-                `;
-            });
-    }
-
-    // Hover effect initialization
-    function initHoverEffects() {
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.transform = `
-                    translateY(-5px)
-                    rotateX(${(y - rect.height/2)/15}deg)
-                    rotateY(${-(x - rect.width/2)/15}deg)
-                `;
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0)';
-            });
-        });
-    }
-
-    // Initialize on load
-    document.addEventListener('DOMContentLoaded', initHoverEffects);
-</script>
-
+{% block scripts %}
+<script src="{% static 'js/global.js' %}"></script>
 {% endblock %}

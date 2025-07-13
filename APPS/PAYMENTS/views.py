@@ -11,6 +11,8 @@ from datetime import date
 import uuid
 import json
 
+from paypal.standard.forms import PayPalPaymentsForm
+
 from .models import PaymentMode, PaymentGateway, PaymentMethod
 from APPS.STORE.models import Order
 
@@ -73,7 +75,7 @@ def process_credit_card_payment(request, order):
         card_number = request.POST.get('card_number')
         expiry_month = request.POST.get('expiry_month')
         expiry_year = request.POST.get('expiry_year')
-        cvv = request.POST.get('cvv')
+        cvv = request.POST.get('cvv')  # Don't store in production
         
         # Validate card details
         if not all([card_holder, card_number, expiry_month, expiry_year, cvv]):
@@ -149,6 +151,34 @@ def process_credit_card_payment(request, order):
 @login_required
 def process_paypal_payment(request, order):
     """Initiate a PayPal payment"""
+    # What you want the button to do.
+    paypal_dict = {
+        "business": settings.PAYPAL_RECEIVER_EMAIL,
+        "amount": f"{order.total_price:.2f}",
+        "item_name": f"Order {order.id}",
+        "invoice": f"{order.id}-{uuid.uuid4().hex[:8]}",
+        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+        "return_url": request.build_absolute_uri(reverse('paypal_return', kwargs={'order_id': order.id})),
+        "cancel_return": request.build_absolute_uri(reverse('paypal_cancel', kwargs={'order_id': order.id})),
+        "custom": order.id,  # Custom data you want to pass to PayPal
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"order": order, "form": form}
+    return render(request, "apps/payments/paypal_form.html", context)
+
+
+
+@login_required
+@transaction.atomic
+def paypal_return(request, order_id):
+    """Handle successful PayPal payment return"""
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    
+    # In a real application, you would verify the payment with PayPal's IPN here
+    # For this example, we'll assume it's successful
+    
     # Get or create a PayPal payment gateway
     gateway, _ = PaymentGateway.objects.get_or_create(
         gateway_type='paypal',
@@ -158,43 +188,18 @@ def process_paypal_payment(request, order):
         }
     )
     
-    # Create a pending payment record
-    transaction_id = f"PP-{uuid.uuid4().hex[:12].upper()}"
-    payment = PaymentMode.objects.create(
+    # Create a payment record (if not already created by IPN)
+    payment, created = PaymentMode.objects.get_or_create(
         user=request.user,
         order_id=str(order.id),
-        amount=order.total_price,
         gateway=gateway,
         payment_method='paypal',
-        status='pending',
-        transaction_id=transaction_id
+        defaults={
+            'amount': order.total_price,
+            'status': 'pending', # Will be updated by IPN or manually here
+            'transaction_id': f"PP-RETURN-{uuid.uuid4().hex[:8]}"
+        }
     )
-    
-    # In a real application, you would redirect to PayPal here
-    # For this example, we'll redirect to a simulated PayPal page
-    return redirect('paypal_redirect', payment_id=payment.id)
-
-@login_required
-def paypal_redirect(request, payment_id):
-    """Simulate PayPal redirect and callback"""
-    payment = get_object_or_404(PaymentMode, id=payment_id, user=request.user)
-    order = get_object_or_404(Order, id=int(payment.order_id), user=request.user)
-    
-    context = {
-        'payment': payment,
-        'order': order,
-        'return_url': request.build_absolute_uri(reverse('paypal_return', kwargs={'payment_id': payment.id})),
-        'cancel_url': request.build_absolute_uri(reverse('paypal_cancel', kwargs={'payment_id': payment.id})),
-    }
-    
-    return render(request, 'apps/payments/paypal_redirect.html', context)
-
-@login_required
-@transaction.atomic
-def paypal_return(request, payment_id):
-    """Handle successful PayPal payment return"""
-    payment = get_object_or_404(PaymentMode, id=payment_id, user=request.user)
-    order = get_object_or_404(Order, id=int(payment.order_id), user=request.user)
     
     # Mark payment as completed
     payment.complete_payment(payment.transaction_id)
@@ -206,10 +211,31 @@ def paypal_return(request, payment_id):
     return redirect('order_confirmation', order_id=order.id)
 
 @login_required
-def paypal_cancel(request, payment_id):
+def paypal_cancel(request, order_id):
     """Handle cancelled PayPal payment"""
-    payment = get_object_or_404(PaymentMode, id=payment_id, user=request.user)
-    order = get_object_or_404(Order, id=int(payment.order_id), user=request.user)
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    
+    # Get or create a PayPal payment gateway
+    gateway, _ = PaymentGateway.objects.get_or_create(
+        gateway_type='paypal',
+        defaults={
+            'name': 'PayPal',
+            'is_active': True
+        }
+    )
+    
+    # Create a payment record (if not already created by IPN)
+    payment, created = PaymentMode.objects.get_or_create(
+        user=request.user,
+        order_id=str(order.id),
+        gateway=gateway,
+        payment_method='paypal',
+        defaults={
+            'amount': order.total_price,
+            'status': 'failed', # Will be updated by IPN or manually here
+            'transaction_id': f"PP-CANCEL-{uuid.uuid4().hex[:8]}"
+        }
+    )
     
     # Mark payment as failed
     payment.fail_payment("Payment cancelled by user")

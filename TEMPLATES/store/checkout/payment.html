@@ -1,7 +1,7 @@
-{% extends "shop/base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block products_container %}
+{% block content %}
 <div class="container py-5">
   <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="mb-4">
@@ -168,44 +168,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Toggle payment method details
-    const paymentOptions = document.querySelectorAll('input[name="payment_method"]');
-    const creditCardDetails = document.getElementById('credit_card_details');
-    const paypalDetails = document.getElementById('paypal_details');
-    const savedCardsSection = document.getElementById('saved_cards_section');
-    
-    paymentOptions.forEach(option => {
-      option.addEventListener('change', function() {
-        if (this.value === 'credit_card') {
-          creditCardDetails.classList.remove('d-none');
-          if (savedCardsSection) savedCardsSection.classList.remove('d-none');
-          paypalDetails.classList.add('d-none');
-        } else if (this.value === 'paypal') {
-          creditCardDetails.classList.add('d-none');
-          if (savedCardsSection) savedCardsSection.classList.add('d-none');
-          paypalDetails.classList.remove('d-none');
-        }
-      });
-    });
-    
-    // Toggle new card form based on saved card selection
-    if (savedCardsSection) {
-      const cardOptions = document.querySelectorAll('input[name="card_id"]');
-      const newCardForm = document.getElementById('credit_card_details');
-      
-      cardOptions.forEach(option => {
-        option.addEventListener('change', function() {
-          if (this.id === 'new_card') {
-            newCardForm.classList.remove('d-none');
-          } else {
-            newCardForm.classList.add('d-none');
-          }
-        });
-      });
-    }
-  });
-</script>
+{% block scripts %}
+<script src="{% static 'js/global.js' %}"></script>
 {% endblock %}

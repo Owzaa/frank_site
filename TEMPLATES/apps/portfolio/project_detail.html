@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'base.html' %}
 
 {% load static %}
 
@@ -86,24 +86,4 @@
     </div>
   </div>
 </div>
-{% endblock %}
-
-{% block extra_css %}
-<style>
-  .project-carousel {
-    max-height: 600px;
-    overflow: hidden;
-  }
-  
-  .carousel-item img {
-    object-fit: cover;
-    height: 500px;
-  }
-
-  .carousel-indicators button {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-</style>
 {% endblock %}

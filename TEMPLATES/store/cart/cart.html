@@ -1,7 +1,7 @@
-{% extends "shop/base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block products_container %}
+{% block content %}
 <div class="container py-5">
   <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="mb-4">
@@ -134,18 +134,8 @@
   </div>
   {% endif %}
 </div>
+{% endblock %}
 
-<script>
-  function incrementQuantity(button) {
-    const input = button.parentNode.querySelector('input');
-    input.value = parseInt(input.value) + 1;
-  }
-  
-  function decrementQuantity(button) {
-    const input = button.parentNode.querySelector('input');
-    if (parseInt(input.value) > 1) {
-      input.value = parseInt(input.value) - 1;
-    }
-  }
-</script>
+{% block scripts %}
+<script src="{% static 'js/global.js' %}"></script>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'base.html' %}
 
 {% load static %}
 
@@ -116,24 +116,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_css %}
-.hover-lift {
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-.pagination .page-link {
-    border-radius: 8px;
-    margin: 0 3px;
-    min-width: 38px;
-    text-align: center;
-}
-.badge-category {
-    font-size: 0.9em;
-    padding: 0.4em 0.8em;
-}
 {% endblock %}

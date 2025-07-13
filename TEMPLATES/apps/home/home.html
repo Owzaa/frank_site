@@ -1,8 +1,5 @@
-{% extends 'main/base.html' %}
-
+{% extends 'base.html' %}
 {% load static %}
-
-{% load django_bootstrap5 %}
 
 {% block content %}
 <div class="container-flex w-100 h-100 justify-content-center align-items-center">
@@ -18,9 +15,6 @@
 						COLLABORATE | CREATE | ELAVATE
 					</h1>
 				</div>
-				<!-- Text Content Column -->
-				<!-- Image Column -->
-
 			</div>
 
 		</div>
@@ -49,16 +43,13 @@
 
 
 	<!-- SEASON_SCOOP_SECTION -->
-	<!-- SEASON_SCOOP_SECTION -->
-	<section class="container-flex justify-center season_scoop-section m-0 pb-0 " style="background-color:#FFF1EA;">
+	<section class="container-flex justify-center season_scoop-section m-0 pb-0 ">
 		<div class="d-block fluid justify-content-center">
 			<!-- Section Header -->
 			<div class="container p-4">
 				<div class="col-12 text-center">
-					<h2 class="display-3 fw-semibold text-uppercase position-relative" style="color: #BD7841;">
+					<h2 class="display-3 fw-semibold text-uppercase position-relative">
 						Season Scoop
-						<span
-							class="title-decoration position-absolute bottom-5 start-5 translate-middle-x bg-primary"></span>
 					</h2>
 				</div>
 			</div>
@@ -75,7 +66,7 @@
 							{% endif %}
 
 							<div class="card-body text-center p-3">
-								<h6 class="card-title  fw-lighter text-uppercase mb-2" style="font-size: 1.1rem;color:#AA4D1C;">
+								<h6 class="card-title  fw-lighter text-uppercase mb-2">
 									{{ post.title }}
 								</h6>
 								<p class="card-text text-muted small">
@@ -84,7 +75,7 @@
 							</div>
 
 							<div
-								class="card-footer bg-white d-flex justify-content-between text-muted small px-3 py-2 border-0" style="font-size: 1.1rem;color:#AA4D2A;">
+								class="card-footer bg-white d-flex justify-content-between text-muted small px-3 py-2 border-0">
 								<span><i class="fas fa-eye me-1"></i>{{ post.views_count }} views</span>
 								<span><i class="fas fa-comment me-1"></i>{{ post.comments_count }} comments</span>
 								<span><i class="fas fa-heart me-1"></i>{{ post.likes_count }} likes</span>
@@ -100,25 +91,16 @@
 					</div>
 					{% endfor %}
 				</div>
-
-				<!-- Swiper Navigation Arrows -->
-				<div class=""></div>
-				<div class=""></div>
 			</div>
-
-
-
 		</div>
 	</section>
 
 	<!--INTERESTS_SECTION-->
-	<section class="container-flex interests-section" aria-label="Interest Areas"
-		style="background:rgba(253, 156, 121, 0.14);padding:35px 35px">
+	<section class="container-flex interests-section" aria-label="Interest Areas">
 		<div class="container">
 			<div class="col-12 text-center">
 				<h1 class="display-5 fw-bold text-uppercase section-title position-relative">
 					Interests
-					<span class="title-decoration"></span>
 				</h1>
 			</div>
 
@@ -209,236 +191,4 @@
 	<!--END_CLIENT_SECTION-->
 
 </div>
-{% endblock %}
-
-<!--CSS CUSTOM STYLE-->
-{% block extra_css %}
-<style>
-	/* Main card */
-	.blog-card {
-		background: rgba(255, 146, 54, 0.897);
-		/* soft glass effect */
-		backdrop-filter: blur(8px);
-		border-radius: 30px;
-		overflow: hidden;
-		padding: 0;
-		margin: 0;
-		transition: all 0.5s ease;
-		box-shadow: 0 5px 5px rgba(250, 177, 151, 0.1);
-	}
-
-	/* Active (center) blog card pops */
-	.swiper-slide-active .blog-card {
-		transform: scale(1.1);
-		box-shadow: 0 12px 40px rgba(170, 77, 42, 0.2);
-		background: #222121;
-		/* pure white when focused */
-	}
-
-	/* Default swiper slide */
-	.swiper-slide {
-		width: 100%;
-		margin: 0;
-		padding: 0;
-		transition: all 0.5s ease;
-		text-align: center;
-		font-size: 18px;
-		background: #222121;
-		/* Center slide text vertically */
-		display: -webkit-box;
-		display: -ms-flexbox;
-		display: -webkit-flex;
-		-webkit-box-pack: center;
-		-ms-flex-pack: center;
-		-webkit-justify-content: center;
-		justify-content: center;
-		-webkit-box-align: center;
-		-ms-flex-align: center;
-		-webkit-align-items: center;
-		flex-direction: column;
-
-		justify-content: center;
-		align-items: center;
-		transition: all 0.5s ease;
-		margin-bottom: 15px;
-	}
-
-	/* Default swiper slide image */
-	.swiper-slide img {
-		display: block !important;
-		align-items: center;
-		width: 100%;
-		height: 100%;
-		max-width: 100%;
-		max-height: 350px;
-		object-fit: cover;
-		/* keep aspect ratio */
-		border-radius: 30px;
-		transition: all 1.5s ease;
-	}
-
-	.swiper-slide img:hover {
-		opacity: .7;
-		transform: scale(1.0);
-	}
-
-	/* Active (center) swiper slide image */
-	.swiper-slide-active img {
-		max-width: 250px;
-		max-height: 250px;
-		opacity: 0.7;
-		/* soft glass effect */
-		transform: scale(.5);
-	}
-
-	/* Active (center) swiper slide image */
-	.swiper-slide-active .blog-card {
-		opacity: 1;
-		transform: scale(1.1);
-	}
-
-	/* Active (center) swiper slide image */
-	.swiper-slide-active .blog-card h2,
-	.swiper-slide-active .blog-card p {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-	/* Active (center) swiper slide image */
-	.swiper-slide-active .blog-card h2 {
-		transition-delay: 0.1s;
-		transition: opacity .5s, transform 0.5s;
-	}
-
-	.swiper-slide-active {
-		opacity: .3;
-	}
-
-	/* Blog text fade animation */
-	.blog-card h2,
-	.blog-card p {
-		opacity: 0;
-		transform: translateY(20px);
-		transition: all 0.5s ease;
-	}
-
-	/* When card is active, reveal text */
-	.swiper-slide-active .blog-card h2,
-	.swiper-slide-active .blog-card p {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-
-
-
-	.section-title {
-		color: #AA4D2A;
-		letter-spacing: 1.5px;
-	}
-
-	.title-decoration {
-		position: absolute;
-		bottom: -15px;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 60px;
-		height: 3px;
-		background: #AA4D2A;
-		border-radius: 2px;
-	}
-
-	.hover-lift {
-		transition: all 0.5s ease;
-		border-radius: 12px;
-		overflow: hidden;
-	}
-
-	.hover-lift:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 10px 30px rgba(170, 77, 42, 0.1);
-	}
-
-	.section-title {
-		color: #AA4D2A;
-		letter-spacing: 1.5px;
-	}
-
-	.title-decoration {
-		position: absolute;
-		bottom: -15px;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 60px;
-		height: 3px;
-		background: #AA4D2A;
-		border-radius: 2px;
-	}
-
-	.hover-lift {
-		transition: all 0.5s ease;
-		border-radius: 12px;
-		overflow: hidden;
-	}
-
-	.hover-lift:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 10px 30px rgba(170, 77, 42, 0.1);
-	}
-
-	.text-primary-dark {
-		color: #2d3748;
-	}
-
-	.bg-light {
-		background: #f8f9fa !important;
-	}
-
-	.shadow-hover {
-		box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-	}
-
-	.btn-link:hover {
-		letter-spacing: 0.5px;
-	}
-
-	.interests-section {
-		justify-content: center;
-		align-items: center;
-		width: 100%;
-	}
-
-	.shadow-hover {
-		transition: all 0.3s ease;
-	}
-
-	.shadow-hover:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
-	}
-
-	.section-title {
-		color: #AA4D2A !important;
-	}
-
-	.interest-item {
-		width: 100%;
-		height: 50%;
-		transition: transform 0.3s ease;
-	}
-
-	.interest-item:hover {
-		transform: scale(1.05);
-	}
-
-	.interest-item,
-	img {
-		filter: grayscale(100%);
-		transition: filter 0.3s ease;
-	}
-
-	.interest-item:hover .interest-img {
-		filter: grayscale(0%);
-	}
-</style>
 {% endblock %}

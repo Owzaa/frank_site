@@ -1,7 +1,7 @@
-{% extends "shop/base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block products_container %}
+{% block content %}
 <div class="container py-5">
   <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="mb-4">
@@ -206,40 +206,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
-<style>
-  .timeline {
-    position: relative;
-    padding-left: 30px;
-  }
-  
-  .timeline:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 9px;
-    height: 100%;
-    width: 2px;
-    background-color: #e9ecef;
-  }
-  
-  .timeline-item {
-    position: relative;
-    margin-bottom: 30px;
-  }
-  
-  .timeline-marker {
-    position: absolute;
-    left: -30px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 2px #e9ecef;
-  }
-  
-  .timeline-content {
-    padding-bottom: 10px;
-  }
-</style>
+{% block scripts %}
+<script src="{% static 'js/global.js' %}"></script>
 {% endblock %}
